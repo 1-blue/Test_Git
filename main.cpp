@@ -3,7 +3,12 @@
 using namespace std;
 
 int main(void) {
-	//기본상태
+	//기본상태인데 test2도작업시작
+	//동시작업!
+	cout << "겹친다겹쳐";
+	cout << "deff사용해보자";
+
+
 	//test1에서 맘대로수정
 	cout << "테스트1번";
 
