@@ -1,5 +1,0 @@
-♣ = 10 point
-☎ = 20 point
-♨ = 30 point
-◐ = ?? point
-
