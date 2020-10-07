@@ -15,12 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <ClCompile Include="2차원배열구현.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-=======
->>>>>>> 22298ec9c60ab66607d48563362dd2c6d617d925
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
