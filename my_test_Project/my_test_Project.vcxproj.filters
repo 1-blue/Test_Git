@@ -18,7 +18,10 @@
     <ClCompile Include="클래스로만든 2차원배열.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="new delete 오버로딩.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="스마트포인터.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
