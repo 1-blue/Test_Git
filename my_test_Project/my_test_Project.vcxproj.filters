@@ -24,5 +24,11 @@
     <ClCompile Include="스마트포인터.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="펑터.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="소스.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
