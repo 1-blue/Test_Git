@@ -8,6 +8,7 @@
 *.log
 *.tlog
 *.exe
+*.opendb
 
 # 전제 조건
 * .d
