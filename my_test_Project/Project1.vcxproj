@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{B2122B52-BEB9-4B2E-9115-E0378EA25AF7}</ProjectGuid>
-    <RootNamespace>mytestProject</RootNamespace>
+    <ProjectGuid>{B147ADEA-7AAF-4B12-BFA6-C98C36D8489B}</ProjectGuid>
+    <RootNamespace>Project1</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -138,48 +138,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-<<<<<<< Updated upstream
-    <ClCompile Include="EString.cpp" />
-    <ClCompile Include="String.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-=======
-    <ClCompile Include="PointClass.cpp" />
-    <ClCompile Include="SmartPoint.cpp" />
-    <ClCompile Include="String.cpp" />
-    <ClCompile Include="TemplateArray.cpp" />
-    <ClCompile Include="TemplateClass.cpp" />
-    <ClCompile Include="TT.cpp" />
->>>>>>> Stashed changes
-    <ClCompile Include="소스.cpp" />
-    <ClCompile Include="펑터.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="스마트포인터.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="new delete 오버로딩.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="클래스로만든 2차원배열.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-<<<<<<< Updated upstream
-    <ClInclude Include="EString.h" />
-=======
-    <ClInclude Include="PointClass.h" />
-    <ClInclude Include="SmartPoint.h" />
->>>>>>> Stashed changes
-    <ClInclude Include="String.h" />
-    <ClInclude Include="TemplateArray.h" />
-    <ClInclude Include="TemplateClass.h" />
-    <ClInclude Include="TT.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

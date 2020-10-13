@@ -1,2 +1,0 @@
-C:\Users\user\Desktop\temp_git\Test_Git\my_test_Project\x64\Debug\my_test_Project.exe
-C:\Users\user\Desktop\temp_git\Test_Git\my_test_Project\x64\Debug\my_test_Project.pdb
