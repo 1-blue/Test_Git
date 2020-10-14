@@ -19,7 +19,7 @@ Point<T>::~Point()
 }
 
 template <class T>
-ostream& operator<< <>(ostream& os, Point<T>& p)
+ostream& operator<< <>(ostream& os, const Point<T>& p)
 {
 	os << "[" << p.x << ", " << p.y << "]";
 	return os;

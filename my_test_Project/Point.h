@@ -12,7 +12,7 @@ public:
 	Point();
 	Point(int x, int y);
 	~Point();
-	friend ostream& operator<< <>(ostream& os, Point<T>& p);
+	friend ostream& operator<< <>(ostream& os, const Point<T>& p);
 };
 
 //바운드템플릿프렌드.. 클래스템플릿이 지정되면 그에맞게 프랜드템플릿함수도 결정
