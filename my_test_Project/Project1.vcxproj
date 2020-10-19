@@ -142,6 +142,10 @@
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Template.cpp" />
     <ClCompile Include="_Vector.cpp" />
+    <ClCompile Include="자료구조.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h" />
