@@ -1,39 +1,31 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-class A {
-	char c[3] = { 'a', 'b', 'c' };
-
-	static A* a;
-	A() {};
-
-public:
-	static A* GetA() {
-		if (a == nullptr) {
-			cout << "123" << endl;
-			a = new A();
-		}
-			
-		return a;
-	}
-
-	void show() {
-		cout << c[0] << endl;
-		cout << c[1] << endl;
-		cout << c[2] << endl;
-	}
-};
-
-A* A::a = nullptr;
-
-
-
 int main(void)
 {
-	A* a = A::GetA();
+	vector<int> v;
 
-	a->show();
+	v.push_back(1);
+	v.push_back(2);
+	v.push_back(3);
+
+	for (int i = 0; i < v.size(); i++)
+	{
+		cout << v[i] << endl;
+	}
+
+	for (auto it = v.begin(); it != v.end(); it++)
+	{
+		if ((*it) == 2)
+			it = v.erase(it);
+	}
+
+	for (int i = 0; i < v.size(); i++)
+	{
+		cout << v[i] << endl;
+	}
 
 
 	return 0;
