@@ -1,0 +1,2 @@
+C:\Users\DBlab\Desktop\git\Test_Git\my_test_Project\x64\Debug\Project1.exe
+C:\Users\DBlab\Desktop\git\Test_Git\my_test_Project\x64\Debug\Project1.pdb
