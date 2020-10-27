@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include <Windows.h>
 #include <map>
@@ -14,8 +13,6 @@ void ReadFileString(const char* section, const char* key, map<string, string>& t
 	cout << loadData << endl;
 	setlocale(LC_ALL, "");
 }
-
-
 
 int main(void)
 {
@@ -48,5 +45,7 @@ int main(void)
 	cin.get(str, 10, 'i');
 
 	cout << "ÇÑ±Û" << endl;
+
+
 	return 0;
 }
