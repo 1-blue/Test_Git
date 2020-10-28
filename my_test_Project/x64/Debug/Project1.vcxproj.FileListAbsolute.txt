@@ -1,7 +1,0 @@
-<<<<<<< HEAD
-C:\Users\DBlab\Desktop\git\Test_Git\my_test_Project\x64\Debug\Project1.exe
-C:\Users\DBlab\Desktop\git\Test_Git\my_test_Project\x64\Debug\Project1.pdb
-=======
-C:\Users\user\Desktop\새 폴더 (2)\Test_Git\my_test_Project\x64\Debug\Project1.exe
-C:\Users\user\Desktop\새 폴더 (2)\Test_Git\my_test_Project\x64\Debug\Project1.pdb
->>>>>>> 4fcd04242f2a62ea88fdfba28fe3ef4a29e58ff5
