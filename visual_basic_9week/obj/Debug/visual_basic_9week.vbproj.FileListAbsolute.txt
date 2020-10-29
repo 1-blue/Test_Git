@@ -1,0 +1,12 @@
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\bin\Debug\visual_basic_9week.exe.config
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\bin\Debug\visual_basic_9week.exe
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\bin\Debug\visual_basic_9week.pdb
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\bin\Debug\visual_basic_9week.xml
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\obj\Debug\visual_basic_9week.vbprojAssemblyReference.cache
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\obj\Debug\visual_basic_9week.Form1.resources
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\obj\Debug\visual_basic_9week.Resources.resources
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\obj\Debug\visual_basic_9week.vbproj.GenerateResource.cache
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\obj\Debug\visual_basic_9week.vbproj.CoreCompileInputs.cache
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\obj\Debug\visual_basic_9week.exe
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\obj\Debug\visual_basic_9week.xml
+C:\Users\DBlab\Desktop\Test_Git\visual_basic_9week\obj\Debug\visual_basic_9week.pdb
