@@ -1,0 +1,12 @@
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\bin\Debug\my_test_VB_project1.exe.config
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\bin\Debug\my_test_VB_project1.exe
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\bin\Debug\my_test_VB_project1.pdb
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\bin\Debug\my_test_VB_project1.xml
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\obj\Debug\my_test_VB_project1.vbprojAssemblyReference.cache
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\obj\Debug\my_test_VB_project1.Form1.resources
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\obj\Debug\my_test_VB_project1.Resources.resources
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\obj\Debug\my_test_VB_project1.vbproj.GenerateResource.cache
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\obj\Debug\my_test_VB_project1.vbproj.CoreCompileInputs.cache
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\obj\Debug\my_test_VB_project1.exe
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\obj\Debug\my_test_VB_project1.xml
+C:\Users\DBlab\Desktop\Test_Git\my_test_VB_project1\obj\Debug\my_test_VB_project1.pdb
