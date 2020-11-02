@@ -1,0 +1,12 @@
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\bin\Debug\VB_exam.exe.config
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\bin\Debug\VB_exam.exe
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\bin\Debug\VB_exam.pdb
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\bin\Debug\VB_exam.xml
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\obj\Debug\VB_exam.vbprojAssemblyReference.cache
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\obj\Debug\VB_exam.Resources.resources
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\obj\Debug\VB_exam.Form1.resources
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\obj\Debug\VB_exam.vbproj.GenerateResource.cache
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\obj\Debug\VB_exam.vbproj.CoreCompileInputs.cache
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\obj\Debug\VB_exam.exe
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\obj\Debug\VB_exam.xml
+C:\Users\DBlab\Desktop\Test_Git\VB_exam\obj\Debug\VB_exam.pdb
