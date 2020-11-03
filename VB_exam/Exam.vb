@@ -1,6 +1,11 @@
 ﻿Imports System.IO.IsolatedStorage
 Imports System.Threading
 
+'추가해야할것
+'오류창을 띄울 폼
+'찾아보기
+
+
 Public Class Form1
     Private timeThread As Thread    '시간관련스레드
     Private hour As Integer
@@ -11,6 +16,7 @@ Public Class Form1
 
     '예약정보를 넣을 구조체
     Public Structure struct
+        Dim ampm As String
         Dim hour As Integer
         Dim minute As Integer
         Dim useTime As Integer
@@ -38,6 +44,10 @@ Public Class Form1
             '시간/분/초 한자리일경우
             If currentHour <= 9 Then
                 lb_hour.Text = "0" & CStr(currentHour) & ":"
+            ElseIf currentHour > 12 And currentHour < 22 Then
+                lb_hour.Text = "0" & CStr(currentHour - 12) & ":"
+            ElseIf currentHour > 22 Then
+                lb_hour.Text = CStr(currentHour - 12) & ":"
             Else
                 lb_hour.Text = CStr(currentHour) & ":"
             End If
@@ -56,10 +66,82 @@ Public Class Form1
         Loop
     End Sub
 
+    '리스트박스선택체크쓰레드
+    Private Sub ListboxSelectFunction()
+        Do
+            '아무값도 없으면 즉 아무것도 선택하지않으면 -1을반환함
+            Dim index As Integer = CInt(lbox_reservation_list.SelectedIndex)    '선택한 인덱스값 저장
+
+            If index <> -1 Then
+                Dim currentList = CType(list(index), struct)
+                lb_room_number_string.Text = CStr(currentList.roomNumber) & "번"
+                lb_startTime_string.Text = currentList.ampm & " " & CStr(currentList.hour) & "시 " & CStr(currentList.minute) & "분"
+                lb_useTime_string.Text = CStr(currentList.useTime) & "분"
+            End If
+        Loop
+    End Sub
+
+    '체크박스쓰레드
+    Private Sub CheckboxFunction()
+        Do
+            Dim index As Integer = CInt(lbox_reservation_list.Items.Count)    '선택한 인덱스값 저장
+            Dim checkList As struct         '
+
+            If index >= 1 Then
+                For i = 0 To index - 1 Step 1
+                    checkList = CType(list(i), struct)
+
+                    Label1.Text = minute
+                    Label2.Text = checkList.minute
+
+                    If hour = checkList.hour And (minute < checkList.minute + checkList.useTime And minute >= checkList.minute) Then
+                        If checkList.roomNumber = 1 Then
+                            checkbox_room1.Checked = True
+                        End If
+
+                        If checkList.roomNumber = 2 Then
+                            checkbox_room2.Checked = True
+                        End If
+
+                        If checkList.roomNumber = 3 Then
+                            checkbox_room3.Checked = True
+                        End If
+
+                        If checkList.roomNumber = 4 Then
+                            checkbox_room4.Checked = True
+                        End If
+
+                        If checkList.roomNumber = 5 Then
+                            checkbox_room5.Checked = True
+                        End If
+                    Else
+                        checkbox_room1.Checked = False
+                        checkbox_room2.Checked = False
+                        checkbox_room3.Checked = False
+                        checkbox_room4.Checked = False
+                        checkbox_room5.Checked = False
+                    End If
+                Next
+            End If
+        Loop
+
+    End Sub
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        '시간스레드 가동
         timeThread = New Thread(AddressOf TimeFunction)
         timeThread.IsBackground = True
         timeThread.Start()
+
+        '리스트박스체크할 스레드 가동
+        checkThread = New Thread(AddressOf ListboxSelectFunction)
+        checkThread.IsBackground = True
+        checkThread.Start()
+
+        '체크박스체크할 스레드 가동
+        checkboxThread = New Thread(AddressOf CheckboxFunction)
+        checkboxThread.IsBackground = True
+        checkboxThread.Start()
 
         '텍스트박스 입력불가
         tb_reservation_info.Enabled = False
@@ -102,6 +184,12 @@ Public Class Form1
         '변수초기화.. 5초뒤삭제.. 예약수
         dlayTime = 0
 
+        '체크박스 비활성화
+        'checkbox_room1.Enabled = False
+        'checkbox_room2.Enabled = False
+        'checkbox_room3.Enabled = False
+        'checkbox_room4.Enabled = False
+        'checkbox_room5.Enabled = False
 
     End Sub
 
@@ -143,6 +231,7 @@ Public Class Form1
 
         If isNesting = False Then
             Dim temp As struct      '구조체변수만들고, 값넣고
+            temp.ampm = lb_ampm.Text
             temp.hour = CInt(cb_hour.Text)
             temp.minute = CInt(cb_minute.Text)
             temp.roomNumber = CInt(Mid(cb_room_select.Text, 1, 1))
@@ -155,18 +244,19 @@ Public Class Form1
                         "예약회의실 : " & currentList.roomNumber & "번" & vbCrLf &
                         "예약시간 : " & cb_hour.Text & "시 " & cb_minute.Text & "분, " & "사용시간 : " & currentList.useTime & "분"
 
+            '리스트박스에 예약한 시간을 넣기
+            lbox_reservation_list.Items.Add(lb_ampm.Text & " " & Mid(lb_hour.Text, 1, 2) & "시 " & CStr(minute) & "분 " & CStr(second) & "초")
+
             dlayTimer.Enabled = True
         End If
 
         lb_reservation_info.Text = "현재 " & CStr(list.Count) & "개의 예약이 있습니다."
 
-        '리스트박스에 넣는거 구현필요
+
+
 
 
     End Sub
-
-
-
 
     '텍스트박스의 텍스트를 바꾸기 위한 타이머
     Private Sub dlayTimer_Tick(sender As Object, e As EventArgs) Handles dlayTimer.Tick
@@ -178,6 +268,27 @@ Public Class Form1
             dlayTimer.Enabled = False
         End If
     End Sub
+
+    '예약삭제버튼
+    Private Sub btn_reservation_reseve_Click(sender As Object, e As EventArgs) Handles btn_reservation_reseve.Click
+        'ArrayList에서 삭제
+        list.RemoveAt(lbox_reservation_list.SelectedIndex)
+
+        'listbox에서 삭제
+        lbox_reservation_list.Items.RemoveAt(lbox_reservation_list.SelectedIndex)
+
+        Init()
+    End Sub
+
+    '예약삭제후 윈도우창 최신화를 위해 사용하는 함수(?)같은거
+    Private Sub Init()
+        lb_reservation_info.Text = "현재 " & CStr(list.Count) & "개의 예약이 있습니다."
+        lb_room_number_string.Text = ""
+        lb_startTime_string.Text = ""
+        lb_useTime_string.Text = ""
+    End Sub
+
+
 
 
 

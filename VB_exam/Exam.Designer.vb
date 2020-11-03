@@ -54,6 +54,8 @@ Partial Class Form1
         Me.checkbox_room1 = New System.Windows.Forms.CheckBox()
         Me.btn_open = New System.Windows.Forms.Button()
         Me.dlayTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.gb_reservation_info.SuspendLayout()
         Me.gb_room_state.SuspendLayout()
         Me.SuspendLayout()
@@ -350,12 +352,32 @@ Partial Class Form1
         '
         Me.dlayTimer.Interval = 1000
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(672, 189)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(42, 12)
+        Me.Label1.TabIndex = 16
+        Me.Label1.Text = "Label1"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(670, 209)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(42, 12)
+        Me.Label2.TabIndex = 16
+        Me.Label2.Text = "Label1"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(884, 371)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btn_open)
         Me.Controls.Add(Me.gb_room_state)
         Me.Controls.Add(Me.gb_reservation_info)
@@ -417,4 +439,6 @@ Partial Class Form1
     Friend WithEvents checkbox_room1 As CheckBox
     Friend WithEvents btn_open As Button
     Friend WithEvents dlayTimer As Timer
+    Friend WithEvents Label1 As Label
+    Friend WithEvents Label2 As Label
 End Class
