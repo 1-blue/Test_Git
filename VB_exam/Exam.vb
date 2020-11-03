@@ -15,7 +15,7 @@ Public Class Form1
     Dim list As New ArrayList()       '예약정보를 담을 리스트
 
     '예약정보를 넣을 구조체
-    Public Structure struct
+    Public Structure PersonList
         Dim ampm As String
         Dim hour As Integer
         Dim minute As Integer
@@ -41,12 +41,14 @@ Public Class Form1
                 lb_ampm.Text() = "오후"
             End If
 
-            '시간/분/초 한자리일경우
-            If currentHour <= 9 Then
+            '시간/분/초 한자리일경우 앞에 0붙이기
+            If currentHour = 0 Then         '여기 뭔가 수상한게 시스템상 오후12시를 0시라고해서 바꿨는데 조금애매하다고 생각함
+                lb_hour.Text = "12:"
+            ElseIf currentHour <= 9 Then
                 lb_hour.Text = "0" & CStr(currentHour) & ":"
-            ElseIf currentHour > 12 And currentHour < 22 Then
+            ElseIf currentHour >= 13 And currentHour <= 21 Then
                 lb_hour.Text = "0" & CStr(currentHour - 12) & ":"
-            ElseIf currentHour > 22 Then
+            ElseIf currentHour >= 22 Then
                 lb_hour.Text = CStr(currentHour - 12) & ":"
             Else
                 lb_hour.Text = CStr(currentHour) & ":"
@@ -73,7 +75,7 @@ Public Class Form1
             Dim index As Integer = CInt(lbox_reservation_list.SelectedIndex)    '선택한 인덱스값 저장
 
             If index <> -1 Then
-                Dim currentList = CType(list(index), struct)
+                Dim currentList = CType(list(index), PersonList)
                 lb_room_number_string.Text = CStr(currentList.roomNumber) & "번"
                 lb_startTime_string.Text = currentList.ampm & " " & CStr(currentList.hour) & "시 " & CStr(currentList.minute) & "분"
                 lb_useTime_string.Text = CStr(currentList.useTime) & "분"
@@ -85,11 +87,11 @@ Public Class Form1
     Private Sub CheckboxFunction()
         Do
             Dim index As Integer = CInt(lbox_reservation_list.Items.Count)    '선택한 인덱스값 저장
-            Dim checkList As struct         '
+            Dim checkList As PersonList         '
 
             If index >= 1 Then
                 For i = 0 To index - 1 Step 1
-                    checkList = CType(list(i), struct)
+                    checkList = CType(list(i), PersonList)
 
                     Label1.Text = minute
                     Label2.Text = checkList.minute
@@ -184,13 +186,6 @@ Public Class Form1
         '변수초기화.. 5초뒤삭제.. 예약수
         dlayTime = 0
 
-        '체크박스 비활성화
-        'checkbox_room1.Enabled = False
-        'checkbox_room2.Enabled = False
-        'checkbox_room3.Enabled = False
-        'checkbox_room4.Enabled = False
-        'checkbox_room5.Enabled = False
-
     End Sub
 
     '폼접기
@@ -221,23 +216,24 @@ Public Class Form1
         Dim isNesting As Boolean = False
         If list.Count > 0 Then
             For i = 0 To list.Count - 1 Step 1
-                Dim reservation = CType(list(i), struct)
+                Dim reservation = CType(list(i), PersonList)
                 If reservation.roomNumber = CInt(Mid(cb_room_select.Text, 1, 1)) And reservation.hour = CInt(cb_hour.Text) And reservation.minute - reservation.useTime <= CInt(cb_minute.Text) And reservation.minute + reservation.useTime >= CInt(cb_minute.Text) Then
-                    MsgBox("이미예약존재")    '다른폼 호출하기로 바꾸기
+                    MsgBox(reservation.ampm & " " & reservation.hour & "시 " & reservation.minute & "분 " & reservation.roomNumber & "번 회의실에 이미 예약이 존재합니다.")    '다른폼 호출하기로 바꾸기
                     isNesting = True
                 End If
             Next
         End If
 
         If isNesting = False Then
-            Dim temp As struct      '구조체변수만들고, 값넣고
-            temp.ampm = lb_ampm.Text
-            temp.hour = CInt(cb_hour.Text)
-            temp.minute = CInt(cb_minute.Text)
-            temp.roomNumber = CInt(Mid(cb_room_select.Text, 1, 1))
-            temp.useTime = CInt(Mid(cb_useTime.Text, 1, 1))
+            Dim temp As New PersonList With {
+                .ampm = lb_ampm.Text,
+                .hour = CInt(cb_hour.Text),
+                .minute = CInt(cb_minute.Text),
+                .roomNumber = CInt(Mid(cb_room_select.Text, 1, 1)),
+                .useTime = CInt(Mid(cb_useTime.Text, 1, 1))
+            }      '구조체변수만들고, 값넣고
             list.Add(temp)
-            Dim currentList = CType(list(0), struct)
+            Dim currentList = CType(list(0), PersonList)
 
             tb_reservation_info.Text = lb_ampm.Text & CStr(currentList.hour) & " 시 " & CStr(currentList.minute) & "분 " & CStr(second) & "초에 예약 정보가 확인되었습니다." & vbCrLf &
                         vbCrLf &
@@ -251,10 +247,6 @@ Public Class Form1
         End If
 
         lb_reservation_info.Text = "현재 " & CStr(list.Count) & "개의 예약이 있습니다."
-
-
-
-
 
     End Sub
 
@@ -271,21 +263,27 @@ Public Class Form1
 
     '예약삭제버튼
     Private Sub btn_reservation_reseve_Click(sender As Object, e As EventArgs) Handles btn_reservation_reseve.Click
-        'ArrayList에서 삭제
-        list.RemoveAt(lbox_reservation_list.SelectedIndex)
+        Dim removeIndex As Integer = lbox_reservation_list.SelectedIndex
 
-        'listbox에서 삭제
-        lbox_reservation_list.Items.RemoveAt(lbox_reservation_list.SelectedIndex)
+        '리스트박스요소가 존재하고 선택한상태면 실행
+        If lbox_reservation_list.Items.Count > 0 And removeIndex <> -1 Then
+            'ArrayList에서 삭제
+            list.RemoveAt(removeIndex)
 
-        Init()
+            'listbox에서 삭제
+            lbox_reservation_list.Items.RemoveAt(removeIndex)
+
+            '윈도우 화면 최신화
+            Init()
+        End If
     End Sub
 
     '예약삭제후 윈도우창 최신화를 위해 사용하는 함수(?)같은거
     Private Sub Init()
         lb_reservation_info.Text = "현재 " & CStr(list.Count) & "개의 예약이 있습니다."
-        lb_room_number_string.Text = ""
-        lb_startTime_string.Text = ""
-        lb_useTime_string.Text = ""
+        lb_room_number_string.Text = "         "
+        lb_startTime_string.Text = "          "
+        lb_useTime_string.Text = "          "
     End Sub
 
 
