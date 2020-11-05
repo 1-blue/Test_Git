@@ -40,10 +40,7 @@ Partial Class Form1
         Me.lbox_reservation_list = New System.Windows.Forms.ListBox()
         Me.btn_reservation_reseve = New System.Windows.Forms.Button()
         Me.gb_reservation_info = New System.Windows.Forms.GroupBox()
-        Me.lb_useTime_string = New System.Windows.Forms.Label()
-        Me.lb_startTime_string = New System.Windows.Forms.Label()
         Me.lb_useTime = New System.Windows.Forms.Label()
-        Me.lb_room_number_string = New System.Windows.Forms.Label()
         Me.lb_startTime = New System.Windows.Forms.Label()
         Me.lb_room_number = New System.Windows.Forms.Label()
         Me.gb_room_state = New System.Windows.Forms.GroupBox()
@@ -54,8 +51,6 @@ Partial Class Form1
         Me.checkbox_room1 = New System.Windows.Forms.CheckBox()
         Me.btn_open = New System.Windows.Forms.Button()
         Me.dlayTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.gb_reservation_info.SuspendLayout()
         Me.gb_room_state.SuspendLayout()
         Me.SuspendLayout()
@@ -210,10 +205,7 @@ Partial Class Form1
         '
         'gb_reservation_info
         '
-        Me.gb_reservation_info.Controls.Add(Me.lb_useTime_string)
-        Me.gb_reservation_info.Controls.Add(Me.lb_startTime_string)
         Me.gb_reservation_info.Controls.Add(Me.lb_useTime)
-        Me.gb_reservation_info.Controls.Add(Me.lb_room_number_string)
         Me.gb_reservation_info.Controls.Add(Me.lb_startTime)
         Me.gb_reservation_info.Controls.Add(Me.lb_room_number)
         Me.gb_reservation_info.Location = New System.Drawing.Point(663, 49)
@@ -223,56 +215,32 @@ Partial Class Form1
         Me.gb_reservation_info.TabStop = False
         Me.gb_reservation_info.Text = "예약정보"
         '
-        'lb_useTime_string
-        '
-        Me.lb_useTime_string.AutoSize = True
-        Me.lb_useTime_string.Location = New System.Drawing.Point(75, 107)
-        Me.lb_useTime_string.Name = "lb_useTime_string"
-        Me.lb_useTime_string.Size = New System.Drawing.Size(0, 12)
-        Me.lb_useTime_string.TabIndex = 1
-        '
-        'lb_startTime_string
-        '
-        Me.lb_startTime_string.AutoSize = True
-        Me.lb_startTime_string.Location = New System.Drawing.Point(75, 69)
-        Me.lb_startTime_string.Name = "lb_startTime_string"
-        Me.lb_startTime_string.Size = New System.Drawing.Size(0, 12)
-        Me.lb_startTime_string.TabIndex = 1
-        '
         'lb_useTime
         '
         Me.lb_useTime.AutoSize = True
         Me.lb_useTime.Location = New System.Drawing.Point(7, 107)
         Me.lb_useTime.Name = "lb_useTime"
-        Me.lb_useTime.Size = New System.Drawing.Size(53, 12)
+        Me.lb_useTime.Size = New System.Drawing.Size(57, 12)
         Me.lb_useTime.TabIndex = 1
-        Me.lb_useTime.Text = "사용시간"
-        '
-        'lb_room_number_string
-        '
-        Me.lb_room_number_string.AutoSize = True
-        Me.lb_room_number_string.Location = New System.Drawing.Point(75, 33)
-        Me.lb_room_number_string.Name = "lb_room_number_string"
-        Me.lb_room_number_string.Size = New System.Drawing.Size(0, 12)
-        Me.lb_room_number_string.TabIndex = 0
+        Me.lb_useTime.Text = "사용시간 "
         '
         'lb_startTime
         '
         Me.lb_startTime.AutoSize = True
         Me.lb_startTime.Location = New System.Drawing.Point(7, 69)
         Me.lb_startTime.Name = "lb_startTime"
-        Me.lb_startTime.Size = New System.Drawing.Size(53, 12)
+        Me.lb_startTime.Size = New System.Drawing.Size(57, 12)
         Me.lb_startTime.TabIndex = 1
-        Me.lb_startTime.Text = "시작시간"
+        Me.lb_startTime.Text = "시작시간 "
         '
         'lb_room_number
         '
         Me.lb_room_number.AutoSize = True
         Me.lb_room_number.Location = New System.Drawing.Point(7, 33)
         Me.lb_room_number.Name = "lb_room_number"
-        Me.lb_room_number.Size = New System.Drawing.Size(65, 12)
+        Me.lb_room_number.Size = New System.Drawing.Size(69, 12)
         Me.lb_room_number.TabIndex = 0
-        Me.lb_room_number.Text = "회의실번호"
+        Me.lb_room_number.Text = "회의실번호 "
         '
         'gb_room_state
         '
@@ -352,32 +320,12 @@ Partial Class Form1
         '
         Me.dlayTimer.Interval = 1000
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(672, 189)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(42, 12)
-        Me.Label1.TabIndex = 16
-        Me.Label1.Text = "Label1"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(670, 209)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(42, 12)
-        Me.Label2.TabIndex = 16
-        Me.Label2.Text = "Label1"
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(884, 371)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btn_open)
         Me.Controls.Add(Me.gb_room_state)
         Me.Controls.Add(Me.gb_reservation_info)
@@ -425,10 +373,7 @@ Partial Class Form1
     Friend WithEvents lbox_reservation_list As ListBox
     Friend WithEvents btn_reservation_reseve As Button
     Friend WithEvents gb_reservation_info As GroupBox
-    Friend WithEvents lb_useTime_string As Label
-    Friend WithEvents lb_startTime_string As Label
     Friend WithEvents lb_useTime As Label
-    Friend WithEvents lb_room_number_string As Label
     Friend WithEvents lb_startTime As Label
     Friend WithEvents lb_room_number As Label
     Friend WithEvents gb_room_state As GroupBox
@@ -439,6 +384,4 @@ Partial Class Form1
     Friend WithEvents checkbox_room1 As CheckBox
     Friend WithEvents btn_open As Button
     Friend WithEvents dlayTimer As Timer
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
 End Class

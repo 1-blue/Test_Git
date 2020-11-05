@@ -3,20 +3,33 @@
 
 using namespace std;
 
-void WriteData(string tempSection, string tempKey, string tempValue, string tempPath)
+class Parents
 {
-	auto section = tempSection.c_str();
-	auto key = tempKey.c_str();
-	auto value = tempValue.c_str();
-	auto path = tempPath.c_str();
-	WritePrivateProfileString(section, key, value, path);
-}
+public:
+	void show()
+	{
+		cout << "Parents" << endl;
+	}
+
+};
+
+class Test : public Parents
+{
+public:
+	void show2()
+	{
+		Parents::show();
+		cout << "Test()" << endl;
+	}
+
+
+};
 
 int main(void)
 {
-	WriteData("player1", "hp", "5", "gameInfo\\player33.ini");
-	WriteData("player1", "power", "3", "gameInfo\\player33.ini");
+	Test t;
 
+	t.show2();
 
 
 

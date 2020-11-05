@@ -76,9 +76,10 @@ Public Class Form1
 
             If index <> -1 Then
                 Dim currentList = CType(list(index), PersonList)
-                lb_room_number_string.Text = CStr(currentList.roomNumber) & "번"
-                lb_startTime_string.Text = currentList.ampm & " " & CStr(currentList.hour) & "시 " & CStr(currentList.minute) & "분"
-                lb_useTime_string.Text = CStr(currentList.useTime) & "분"
+
+                lb_room_number.Text = Mid(lb_room_number.Text, 1, 6) & CStr(currentList.roomNumber) & "번"
+                lb_startTime.Text = Mid(lb_startTime.Text, 1, 5) & currentList.ampm & " " & CStr(currentList.hour) & "시 " & CStr(currentList.minute) & "분"
+                lb_useTime.Text = Mid(lb_useTime.Text, 1, 5) & CStr(currentList.useTime) & "분"
             End If
         Loop
     End Sub
@@ -93,37 +94,52 @@ Public Class Form1
                 For i = 0 To index - 1 Step 1
                     checkList = CType(list(i), PersonList)
 
-                    Label1.Text = minute
-                    Label2.Text = checkList.minute
-
                     If hour = checkList.hour And (minute < checkList.minute + checkList.useTime And minute >= checkList.minute) Then
-                        If checkList.roomNumber = 1 Then
-                            checkbox_room1.Checked = True
-                        End If
-
-                        If checkList.roomNumber = 2 Then
-                            checkbox_room2.Checked = True
-                        End If
-
-                        If checkList.roomNumber = 3 Then
-                            checkbox_room3.Checked = True
-                        End If
-
-                        If checkList.roomNumber = 4 Then
-                            checkbox_room4.Checked = True
-                        End If
-
-                        If checkList.roomNumber = 5 Then
-                            checkbox_room5.Checked = True
-                        End If
-                    Else
-                        checkbox_room1.Checked = False
-                        checkbox_room2.Checked = False
-                        checkbox_room3.Checked = False
-                        checkbox_room4.Checked = False
-                        checkbox_room5.Checked = False
+                        Select Case checkList.roomNumber
+                            Case 1
+                                checkbox_room1.Checked = True
+                            Case 2
+                                checkbox_room2.Checked = True
+                            Case 3
+                                checkbox_room3.Checked = True
+                            Case 4
+                                checkbox_room4.Checked = True
+                            Case 5
+                                checkbox_room5.Checked = True
+                        End Select
                     End If
                 Next
+            End If
+
+            '이조건으로 분명히 체크안되게 만들었는데 왜다시 체크되는지 모르겠음
+            If checkbox_room1.CheckState = CheckState.Checked Then
+                checkbox_room1.Checked = True
+            ElseIf checkbox_room1.CheckState = CheckState.unChecked Then
+                checkbox_room1.Checked = False
+            End If
+
+            If checkbox_room2.CheckState = CheckState.Checked Then
+                checkbox_room2.Checked = True
+            ElseIf checkbox_room2.CheckState = CheckState.unChecked Then
+                checkbox_room2.Checked = False
+            End If
+
+            If checkbox_room3.CheckState = CheckState.Checked Then
+                checkbox_room3.Checked = True
+            ElseIf checkbox_room3.CheckState = CheckState.unChecked Then
+                checkbox_room3.Checked = False
+            End If
+
+            If checkbox_room4.CheckState = CheckState.Checked Then
+                checkbox_room4.Checked = True
+            ElseIf checkbox_room4.CheckState = CheckState.unChecked Then
+                checkbox_room4.Checked = False
+            End If
+
+            If checkbox_room5.CheckState = CheckState.Checked Then
+                checkbox_room5.Checked = True
+            ElseIf checkbox_room5.CheckState = CheckState.unChecked Then
+                checkbox_room5.Checked = False
             End If
         Loop
 
@@ -237,8 +253,8 @@ Public Class Form1
 
             tb_reservation_info.Text = lb_ampm.Text & CStr(currentList.hour) & " 시 " & CStr(currentList.minute) & "분 " & CStr(second) & "초에 예약 정보가 확인되었습니다." & vbCrLf &
                         vbCrLf &
-                        "예약회의실 : " & currentList.roomNumber & "번" & vbCrLf &
-                        "예약시간 : " & cb_hour.Text & "시 " & cb_minute.Text & "분, " & "사용시간 : " & currentList.useTime & "분"
+                        "예약회의실 : " & CStr(currentList.roomNumber) & "번" & vbCrLf &
+                        "예약시간 : " & cb_hour.Text & "시 " & cb_minute.Text & "분, " & "사용시간 : " & CStr(currentList.useTime) & "분"
 
             '리스트박스에 예약한 시간을 넣기
             lbox_reservation_list.Items.Add(lb_ampm.Text & " " & Mid(lb_hour.Text, 1, 2) & "시 " & CStr(minute) & "분 " & CStr(second) & "초")
@@ -267,11 +283,11 @@ Public Class Form1
 
         '리스트박스요소가 존재하고 선택한상태면 실행
         If lbox_reservation_list.Items.Count > 0 And removeIndex <> -1 Then
-            'ArrayList에서 삭제
-            list.RemoveAt(removeIndex)
-
             'listbox에서 삭제
             lbox_reservation_list.Items.RemoveAt(removeIndex)
+
+            'ArrayList에서 삭제
+            list.RemoveAt(removeIndex)
 
             '윈도우 화면 최신화
             Init()
@@ -281,13 +297,8 @@ Public Class Form1
     '예약삭제후 윈도우창 최신화를 위해 사용하는 함수(?)같은거
     Private Sub Init()
         lb_reservation_info.Text = "현재 " & CStr(list.Count) & "개의 예약이 있습니다."
-        lb_room_number_string.Text = "         "
-        lb_startTime_string.Text = "          "
-        lb_useTime_string.Text = "          "
+        lb_room_number.Text = Mid(lb_room_number.Text, 1, 6)
+        lb_startTime.Text = Mid(lb_startTime.Text, 1, 5)
+        lb_useTime.Text = Mid(lb_useTime.Text, 1, 5)
     End Sub
-
-
-
-
-
 End Class
