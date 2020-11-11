@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "CClockHelpDlg.h"
 
 
 // CPratice42ClockDlg 대화 상자
@@ -48,4 +49,9 @@ public:
 	afx_msg void OnClickedCheck1Year();
 	afx_msg void OnClickedCheckHour();
 	afx_msg void OnClickedButtonHelp();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	CString m_strAmPm;
+
+	bool m_bViewHelp;
+	CClockHelpDlg m_dlgCheckHelp;
 };

@@ -58,6 +58,7 @@ CPratice42ClockDlg::CPratice42ClockDlg(CWnd* pParent /*=nullptr*/)
 	, m_strSecond(_T(""))
 	, m_strMinute(_T(""))
 	, m_strHour(_T(""))
+	, m_strAmPm(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -71,6 +72,7 @@ void CPratice42ClockDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_second, m_strSecond);
 	DDX_Text(pDX, IDC_EDIT_minute, m_strMinute);
 	DDX_Text(pDX, IDC_EDIT_hour, m_strHour);
+	DDX_Text(pDX, IDC_EDIT_ampm, m_strAmPm);
 }
 
 BEGIN_MESSAGE_MAP(CPratice42ClockDlg, CDialogEx)
@@ -82,6 +84,7 @@ BEGIN_MESSAGE_MAP(CPratice42ClockDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK1_year, &CPratice42ClockDlg::OnClickedCheck1Year)
 	ON_BN_CLICKED(IDC_CHECK_hour, &CPratice42ClockDlg::OnClickedCheckHour)
 	ON_BN_CLICKED(IDC_BUTTON_help, &CPratice42ClockDlg::OnClickedButtonHelp)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -120,7 +123,21 @@ BOOL CPratice42ClockDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_RADIO_12))->SetCheck(true);		//오디오박스 12버튼체크
 	((CButton*)GetDlgItem(IDC_CHECK_hour))->SetCheck(true);		//체크박스 hour체크
 
+	//체크안한거는 화면에서 안보이게 만듦
+	GetDlgItem(IDC_EDIT_year)->ShowWindow(SW_HIDE);		//화면에 안보이게 만듦
+	GetDlgItem(IDC_EDIT_month)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_EDIT_day)->ShowWindow(SW_HIDE);
 
+	GetDlgItem(IDC_STATIC_year)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STATIC_month)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STATIC_day)->ShowWindow(SW_HIDE);
+
+	m_bCheckYear = false;
+
+	m_bradioClickType = true;
+
+	SetTimer(0, 1000, NULL);		//타이머번호, 시간간격, NULL(호출될함수주소)
+		
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -226,7 +243,7 @@ void CPratice42ClockDlg::OnClickedCheck1Year()
 void CPratice42ClockDlg::OnClickedCheckHour()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (m_bCheckHour == false)	//체크박스눌러지면
+	if (m_bCheckHour == true)	//체크박스눌러지면
 	{
 		GetDlgItem(IDC_EDIT_hour)->ShowWindow(SW_SHOW);		//화면에 보이게 만듦
 		GetDlgItem(IDC_EDIT_minute)->ShowWindow(SW_SHOW);
@@ -236,7 +253,7 @@ void CPratice42ClockDlg::OnClickedCheckHour()
 		GetDlgItem(IDC_STATIC_minute)->ShowWindow(SW_SHOW);
 		GetDlgItem(IDC_STATIC_second)->ShowWindow(SW_SHOW);
 
-		m_bCheckHour = true;
+		m_bCheckHour = false;
 	}
 	else	//체크박스 체크해제일때
 	{
@@ -248,16 +265,72 @@ void CPratice42ClockDlg::OnClickedCheckHour()
 		GetDlgItem(IDC_STATIC_minute)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_STATIC_second)->ShowWindow(SW_HIDE);
 
-		m_bCheckHour = false;
+		m_bCheckHour = true;
 	}
+}
+
+//타이머함수추가
+void CPratice42ClockDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	int hour;
+	CTime timer;
+	timer = CTime::GetCurrentTime();
+
+	//년월일설정
+	m_strYear.Format(_T("%d"), timer.GetYear());
+	m_strMonth.Format(_T("%d"), timer.GetMonth());
+	m_strDay.Format(_T("%d"), timer.GetDay());
+
+	hour = timer.GetHour();
+
+	if (m_bradioClickType == true)
+	{
+		if (hour >= 12)
+		{
+			m_strAmPm = _T("PM");
+			if (hour >= 13)
+				hour -= 12;
+		}
+		else
+			m_strAmPm = _T("AM");
+	}
+	else
+	{
+		m_strAmPm.Empty();		//값이 비어있는상태로 만듦
+	}
+
+	//시간설정
+	m_strHour.Format(_T("%d"), hour);
+	m_strMinute.Format(_T("%d"), timer.GetMinute());
+	m_strSecond.Format(_T("%d"), timer.GetSecond());
+
+	UpdateData(false);	//변수의값을 컨트롤로보냄
+
+	CDialogEx::OnTimer(nIDEvent);
 }
 
 //버튼클릭
 void CPratice42ClockDlg::OnClickedButtonHelp()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_bViewHelp == false)
+	{
+		m_dlgCheckHelp.Create(IDD_DIALOG_HELP, this);
 
+		CRect rectMain, rectHelp;
+		GetWindowRect(&rectMain);		//윈도우의 크기구함
 
+		m_dlgCheckHelp.GetWindowRect(&rectHelp);
+		m_dlgCheckHelp.MoveWindow(rectMain.right, rectMain.top, rectMain.Width(), rectMain.Height());
 
-
+		m_dlgCheckHelp.ShowWindow(SW_SHOW);
+		m_bViewHelp = true;
+	}
+	else
+	{
+		m_dlgCheckHelp.ShowWindow(SW_HIDE);
+		m_dlgCheckHelp.DestroyWindow();		//윈도우파괴
+		m_bViewHelp = false;
+	}
 }

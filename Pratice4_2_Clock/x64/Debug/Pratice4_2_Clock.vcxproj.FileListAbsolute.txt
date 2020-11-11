@@ -1,0 +1,2 @@
+C:\Users\DBlab\Desktop\Test_Git\Pratice4_2_Clock\x64\Debug\Pratice4_2_Clock.exe
+C:\Users\DBlab\Desktop\Test_Git\Pratice4_2_Clock\x64\Debug\Pratice4_2_Clock.pdb
