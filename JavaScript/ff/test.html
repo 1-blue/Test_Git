@@ -20,6 +20,133 @@
         //     })(i);
         // }
         
+        // var string = "";
+        // var obj = {
+        //     apple : "사과",
+        //     color : "빨강",
+        //     money : "10000"
+        // }
+        // for(var x in obj){
+        //     string += x + "는 " + obj[x] + "!" + '\n';
+        // }
+        // alert(string);
+
+        // var obj = {};
+        // obj.name = "test";
+        // obj.hobby = "cycle";
+        // obj.xx = "true";
+        // obj.toStr = function () {
+        //     var str = "";
+        //     for(var t in this){
+        //         if(t != "toStr"){
+        //             str += t + '\t' + obj[t] + '\n';
+        //         }
+        //     }
+        //     return str;
+        // };
+        // alert(obj);
+
+        // function template(name, korean, math, english) {
+        //     var obj = {
+        //         name : name,
+        //         국어 : korean,
+        //         수학 : math,
+        //         영어 : english,
+        //         GetSum : function(){
+        //             return this.국어 + this.수학 + this.영어;
+        //         },
+        //         GetAvg : function(){
+        //             return this.GetSum() / 3;
+        //         },
+        //         toString : function(){
+        //             return this.name + "의 총점 : " + this.GetSum() + " | 평균 : " + this.GetAvg() + "입니다." + '\n';
+        //         }
+        //     }
+        //     return obj;
+        // }
+        // var arr = [];
+        // arr.push(template("가", 10, 11, 12));
+        // arr.push(template("나", 20, 21, 22));
+        // arr.push(template("다", 30, 31, 32));
+        // arr.push(template("라", 40, 41, 42));
+        // arr.push(template("마", 50, 51, 52));
+        // arr.push(template("바", 60, 61, 62));
+        // var str = "";
+        // for(var idx in arr){
+        //     str += arr[idx].toString();
+        // }
+        // alert(str);
+
+        // function Template(name, korean, math, english) {
+        //     this.name = name,
+        //     this.korean = korean,
+        //     this.math = math,
+        //     this.english = english
+        // }
+        // Template.prototype.getSum = function(){
+        //         return this.korean + this.math + this.english;
+        //     },
+        // Template.prototype.getAvg = function(){
+        //     return this.getSum() / 3;
+        // },
+        // Template.prototype.toString = function(){
+        //     return this.name + "의 총점 : " + this.getSum() + " | 평균 : " + this.getAvg() + "입니다." + '\n';
+        // }
+        // var arr = [];
+        // arr.push(new Template("가", 10, 11, 12));
+        // arr.push(new Template("나", 20, 21, 22));
+        // arr.push(new Template("다", 30, 31, 32));
+        // arr.push(new Template("라", 40, 41, 42));
+        // arr.push(new Template("마", 50, 51, 52));
+        // arr.push(new Template("바", 60, 61, 62));
+        // var str = "";
+        // for(var idx in arr){
+        //     str += arr[idx].toString();
+        // }
+        // alert(str);
+
+        // function Rectangle(width, height){
+        //     this.width = width,
+        //     this.height = height
+        // }
+
+        // Rectangle.prototype.getWidth = function(){
+        //     return this.width;
+        // }
+        // Rectangle.prototype.getHeight = function(){
+        //     return this.height;
+        // }
+        // Rectangle.prototype.setWidth = function(width){
+        //     if(width < 0){
+        //         throw "width가 음수";
+        //     }
+        //     else{
+        //         this.width = width;
+        //     }
+        // }
+        // Rectangle.prototype.setHeight = function(height){
+        //     if(height < 0){
+        //             throw "height가 음수";
+        //         }
+        //         else{
+        //             this.height = height;
+        //         }
+        // }
+        // Rectangle.prototype.area = function(){
+        //     return this.getWidth() * this.getHeight();
+        // }
+        // function Square(length){
+        //     this.base = Rectangle;
+        //     this.base(length, length);
+        // }
+        // Square.prototype = Rectangle.prototype;
+        // Square.prototype.constractor = Square;
+        // var rect = new Rectangle(5, 7);
+        // var squ = new Square(5);
+        // alert(rect.area() + " | " + squ.area());
+        // alert(squ instanceof Rectangle);            //이거 true면 상속받았다고 할 수 있음
+
+
 
 
 
