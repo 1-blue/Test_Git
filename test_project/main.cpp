@@ -1,4 +1,5 @@
 #include <iostream>
+#include <array>
 
 using namespace std;
 
@@ -182,16 +183,27 @@ Element GetEntry(int idx)
 	return ptr->item;
 }
 
+struct Monster {
+	string name;
+	int age;
+};
+
+struct Enemy {
+	string name;
+	int age;
+};
+
+template <class T1, class T2>
+auto Test(T1 x, T2 y) -> decltype(x + y)
+{
+	return x + y;
+}
+
+
+
 int main(void)
 {
-	Push(1);
-	Push(2);
-	Push(3);
-	Push(4);
-	Push(5);
-
-	Print();
-
+	cout << Test(3.3, 4) << endl;
 
 	system("pause");
 	return 0;
