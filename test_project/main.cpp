@@ -199,11 +199,55 @@ auto Test(T1 x, T2 y) -> decltype(x + y)
 	return x + y;
 }
 
+#include <list>
 
+struct Effect
+{
+	unsigned int index;
+	unsigned int damage;
+};
+
+namespace Buff
+{
+	struct Data
+	{
+		unsigned int index;
+		unsigned long long time;
+		Effect effect;
+	};
+
+	class Obejct
+	{
+		Data mData;
+		void Init(const Data& data)
+		{
+			mData = data;
+		}
+	};
+
+	Data dataArray[10];
+
+	void LoadData() {};
+	
+	const Data GetData(unsigned int index)
+	{
+		return dataArray[index];
+	}
+}
 
 int main(void)
 {
-	cout << Test(3.3, 4) << endl;
+	list<Buff::Obejct*> buffList;
+
+	Buff::LoadData();
+	auto buff = new Buff::Obejct();
+	buff->Init(Buff::GetData(1));
+	buffList.emplace_back(buff);
+
+	for (auto buff : buffList)
+	{
+		
+	}
 
 	system("pause");
 	return 0;
