@@ -183,32 +183,9 @@ Element GetEntry(int idx)
 	return ptr->item;
 }
 
-struct Monster {
-	string name;
-	int age;
-};
-
-struct Enemy {
-	string name;
-	int age;
-};
-
-template <class T1, class T2>
-auto Test(T1 x, T2 y) -> decltype(x + y)
-{
-	return x + y;
-}
-
-#include <Windows.h>
-
 int main(void)
 {
-	BITMAP bm;
-	HBITMAP hFileLoadBitmap = (HBITMAP)LoadImage(NULL, "test.jpg", IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE | LR_DEFAULTSIZE);
 
-	GetObject(hFileLoadBitmap, sizeof(BITMAP), &bm);
-	cout << "X : " << bm.bmWidth << endl;
-	cout << "Y : " << bm.bmHeight << endl;
 
 
 	system("pause");
