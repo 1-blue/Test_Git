@@ -199,55 +199,17 @@ auto Test(T1 x, T2 y) -> decltype(x + y)
 	return x + y;
 }
 
-#include <list>
-
-struct Effect
-{
-	unsigned int index;
-	unsigned int damage;
-};
-
-namespace Buff
-{
-	struct Data
-	{
-		unsigned int index;
-		unsigned long long time;
-		Effect effect;
-	};
-
-	class Obejct
-	{
-		Data mData;
-		void Init(const Data& data)
-		{
-			mData = data;
-		}
-	};
-
-	Data dataArray[10];
-
-	void LoadData() {};
-	
-	const Data GetData(unsigned int index)
-	{
-		return dataArray[index];
-	}
-}
+#include <Windows.h>
 
 int main(void)
 {
-	list<Buff::Obejct*> buffList;
+	BITMAP bm;
+	HBITMAP hFileLoadBitmap = (HBITMAP)LoadImage(NULL, "test.jpg", IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE | LR_DEFAULTSIZE);
 
-	Buff::LoadData();
-	auto buff = new Buff::Obejct();
-	buff->Init(Buff::GetData(1));
-	buffList.emplace_back(buff);
+	GetObject(hFileLoadBitmap, sizeof(BITMAP), &bm);
+	cout << "X : " << bm.bmWidth << endl;
+	cout << "Y : " << bm.bmHeight << endl;
 
-	for (auto buff : buffList)
-	{
-		
-	}
 
 	system("pause");
 	return 0;

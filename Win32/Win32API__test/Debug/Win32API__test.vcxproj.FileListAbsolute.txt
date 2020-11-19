@@ -1,0 +1,2 @@
+C:\Users\DBlab\Desktop\Win32API__test\Debug\Win32API__test.exe
+C:\Users\DBlab\Desktop\Win32API__test\Debug\Win32API__test.pdb

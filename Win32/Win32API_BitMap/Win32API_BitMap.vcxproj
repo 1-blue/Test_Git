@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{fd2b836e-6118-46b4-8fb8-3040cfb525a9}</ProjectGuid>
-    <RootNamespace>Win32api1</RootNamespace>
+    <ProjectGuid>{c2e0c12b-7853-4593-986d-b312bec50d31}</ProjectGuid>
+    <RootNamespace>Win32APIBitMap</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -142,22 +142,18 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Win32_api1.h" />
+    <ClInclude Include="Win32API_BitMap.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Win32_api1.cpp" />
+    <ClCompile Include="Win32API_BitMap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Win32_api1.rc" />
+    <ResourceCompile Include="Win32API_BitMap.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="icon1.ico" />
-    <Image Include="icon2.ico" />
+    <Image Include="image\test.jpg" />
     <Image Include="small.ico" />
-    <Image Include="Win32_api1.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cursor1.cur" />
+    <Image Include="Win32API_BitMap.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
