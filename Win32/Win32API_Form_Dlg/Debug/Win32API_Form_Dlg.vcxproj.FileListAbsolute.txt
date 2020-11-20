@@ -1,0 +1,2 @@
+C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_Form_Dlg\Debug\Win32API_Form_Dlg.exe
+C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_Form_Dlg\Debug\Win32API_Form_Dlg.pdb
