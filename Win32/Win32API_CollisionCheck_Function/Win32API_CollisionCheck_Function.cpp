@@ -1,14 +1,14 @@
-﻿// Win32API__test.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// Win32API_CollisionCheck_Function.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include "framework.h"
-#include "Win32API__test.h"
-#include <cstdio>
+#include "Win32API_CollisionCheck_Function.h"
+#include <stdio.h>
 
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
-HINSTANCE hInst;                                // 현재 인스턴스입니다.      ..하나의 프로그램 ID
+HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
@@ -30,7 +30,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_WIN32APITEST, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_WIN32APICOLLISIONCHECKFUNCTION, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
@@ -39,7 +39,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WIN32APITEST));
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WIN32APICOLLISIONCHECKFUNCTION));
 
     MSG msg;
 
@@ -58,7 +58,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex;       //WindowClass설정.. 윈도우창만드는데 필요한 정보 등록
+    WNDCLASSEXW wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
@@ -67,21 +67,20 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WIN32APITEST));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WIN32APICOLLISIONCHECKFUNCTION));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WIN32APITEST);
+    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WIN32APICOLLISIONCHECKFUNCTION);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-    return RegisterClassExW(&wcex);     //윈도우창 등록
+    return RegisterClassExW(&wcex);
 }
 
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)        
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   //윈도우창만들기 반환값은 윈도우핸들
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
@@ -90,33 +89,61 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
-   ShowWindow(hWnd, nCmdShow);      //만든 윈도우창 그리기
-   UpdateWindow(hWnd);              //변경사항있으면 업데이트하기
+   ShowWindow(hWnd, nCmdShow);
+   UpdateWindow(hWnd);
 
    return TRUE;
 }
 
+/*
+* BOOL PtInRect(const RECT* lpRect, POINT pt)
+* pt에 lpRect영역내부에 있는지 확인
+* 내부에 있으면 0이 아닌값 반환
+* 
+* IntersectRect(LPRECT lprcDst, const RECT* lpRect1, const RECT* lpRect2)
+* lprcDst : 교차된 영역을 반환 (NULL값주면 안됨)
+*/
+
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    HBITMAP hBitmap;
-    static BITMAP bmp;
-    static HDC mdc;
-    static int idx = -1;
+    static POINT mpt{ 0,0 };
+    static RECT r{ 50, 50, 350, 350 };
+    static RECT r2{ 500, 500, 700, 700 };
+    static RECT tempr{ 0,0,0,0 };
+    static char str[100]{ '\0' };
+    static char str2[100]{ '\0' };
 
     switch (message)
     {
-    case WM_CREATE:
-        mdc = CreateCompatibleDC(GetDC(hWnd));
-        SetTimer(hWnd, 1, 150, NULL);
+    case WM_LBUTTONDOWN:
+        mpt.x = LOWORD(lParam);
+        mpt.y = HIWORD(lParam);
+        InvalidateRect(hWnd, NULL, true);
         break;
 
-    case WM_TIMER:
+    case WM_KEYDOWN:
         switch (wParam)
         {
-        case 1:
-            InvalidateRect(hWnd, NULL, true);
+        case VK_LEFT:
+            r2.left -= 5;
+            r2.right -= 5;
+            break;
+        case VK_RIGHT:
+            r2.left += 5;
+            r2.right += 5;
+            break;
+        case VK_UP:
+            r2.top -= 5;
+            r2.bottom -= 5;
+            break;
+        case VK_DOWN:
+            r2.top += 5;
+            r2.bottom += 5;
             break;
         }
+        InvalidateRect(hWnd, NULL, true);
         break;
 
     case WM_COMMAND:
@@ -140,47 +167,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            switch (++idx)
-            {
-            case 0:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\1.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 1:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\22.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 2:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\3.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 3:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\4.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 4:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\5.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 5:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\6.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 6:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\7.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 7:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\8.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                idx = -1;
-                break;
-            default:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\11.png", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-            }
-            GetObject(hBitmap, sizeof(BITMAP), &bmp);
-            SelectObject(mdc, hBitmap);
-            BitBlt(hdc, 300, 300, bmp.bmWidth, bmp.bmHeight, mdc, 0, 0, SRCCOPY);
-            DeleteObject(hBitmap);
+            Rectangle(hdc, r.left, r.top, r.right, r.bottom);
+            SetROP2(hdc, R2_NOTXORPEN);
+            Rectangle(hdc, r2.left, r2.top, r2.right, r2.bottom);
+            
+            if (PtInRect(&r, mpt) != 0)
+                sprintf_s(str, "영역내부");
+            else
+                sprintf_s(str, "영역외부");
 
+            if(IntersectRect(&tempr, &r, &r2) != 0)
+                sprintf_s(str2, "겹침");
+            else
+                sprintf_s(str2, "안겹침");
+
+            TextOut(hdc, 10, 10, str, strlen(str));
+            TextOut(hdc, 10, 30, str2, strlen(str2));
             EndPaint(hWnd, &ps);
         }
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
-        DeleteDC(mdc);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

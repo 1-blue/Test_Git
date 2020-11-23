@@ -1,0 +1,2 @@
+C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_GradeManagementProject\Debug\Win32API_GradeManagementProject.exe
+C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_GradeManagementProject\Debug\Win32API_GradeManagementProject.pdb

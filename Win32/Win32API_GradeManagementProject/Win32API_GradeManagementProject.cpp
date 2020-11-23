@@ -1,14 +1,17 @@
-﻿// Win32API__test.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// Win32API_GradeManagementProject.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include "framework.h"
-#include "Win32API__test.h"
-#include <cstdio>
+#include "Win32API_GradeManagementProject.h"
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <string>
 
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
-HINSTANCE hInst;                                // 현재 인스턴스입니다.      ..하나의 프로그램 ID
+HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
@@ -17,12 +20,16 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK    SignUp(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+    if (-1 == DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG_SignUp), NULL, SignUp))
+        return 0;
+
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -30,7 +37,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_WIN32APITEST, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_WIN32APIGRADEMANAGEMENTPROJECT, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
@@ -39,7 +46,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WIN32APITEST));
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WIN32APIGRADEMANAGEMENTPROJECT));
 
     MSG msg;
 
@@ -58,7 +65,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex;       //WindowClass설정.. 윈도우창만드는데 필요한 정보 등록
+    WNDCLASSEXW wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
@@ -67,21 +74,20 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WIN32APITEST));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WIN32APIGRADEMANAGEMENTPROJECT));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WIN32APITEST);
+    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WIN32APIGRADEMANAGEMENTPROJECT);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-    return RegisterClassExW(&wcex);     //윈도우창 등록
+    return RegisterClassExW(&wcex);
 }
 
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)        
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   //윈도우창만들기 반환값은 윈도우핸들
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
@@ -90,39 +96,58 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
-   ShowWindow(hWnd, nCmdShow);      //만든 윈도우창 그리기
-   UpdateWindow(hWnd);              //변경사항있으면 업데이트하기
+   ShowWindow(hWnd, nCmdShow);
+   UpdateWindow(hWnd);
 
    return TRUE;
 }
 
+//로그인창.. 파일에서 입력받아서 로그인기능 구현
+INT_PTR CALLBACK SignUp(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    using namespace std;
+    ifstream fcin("login\\login.txt");
+    static string strID;
+    static string strPW;
+    char id[20]{ '\0' };
+    char pw[20]{ '\0' };
+    getline(fcin, strID, ',');
+    getline(fcin, strPW, ',');
+
+    UNREFERENCED_PARAMETER(lParam);
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        break;
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDOK)
+        {
+            GetDlgItemText(hDlg, IDC_EDIT_id, id, 20);
+            GetDlgItemText(hDlg, IDC_EDIT_pw, pw, 20);
+            if(strcmp(strID.c_str(), id) == 0 && strcmp(strPW.c_str(), pw) == 0)
+                EndDialog(hDlg, 1);
+        }
+        else if(LOWORD(wParam) == IDCANCEL)
+        {
+            EndDialog(hDlg, -1);
+        }
+        break;
+    }
+    return (INT_PTR)FALSE;
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    HBITMAP hBitmap;
-    static BITMAP bmp;
-    static HDC mdc;
-    static int idx = -1;
-
     switch (message)
     {
     case WM_CREATE:
-        mdc = CreateCompatibleDC(GetDC(hWnd));
-        SetTimer(hWnd, 1, 150, NULL);
-        break;
 
-    case WM_TIMER:
-        switch (wParam)
-        {
-        case 1:
-            InvalidateRect(hWnd, NULL, true);
-            break;
-        }
         break;
 
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
-            // 메뉴 선택을 구문 분석합니다:
             switch (wmId)
             {
             case IDM_ABOUT:
@@ -140,47 +165,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            switch (++idx)
-            {
-            case 0:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\1.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 1:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\22.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 2:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\3.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 3:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\4.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 4:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\5.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 5:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\6.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 6:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\7.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 7:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\8.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                idx = -1;
-                break;
-            default:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\11.png", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-            }
-            GetObject(hBitmap, sizeof(BITMAP), &bmp);
-            SelectObject(mdc, hBitmap);
-            BitBlt(hdc, 300, 300, bmp.bmWidth, bmp.bmHeight, mdc, 0, 0, SRCCOPY);
-            DeleteObject(hBitmap);
+
+
+
 
             EndPaint(hWnd, &ps);
         }
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
-        DeleteDC(mdc);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
