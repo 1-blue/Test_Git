@@ -1,0 +1,2 @@
+C:\Users\user\Desktop\Win32API__\Debug\Win32API__.exe
+C:\Users\user\Desktop\Win32API__\Debug\Win32API__.pdb

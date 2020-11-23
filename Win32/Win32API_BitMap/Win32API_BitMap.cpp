@@ -220,7 +220,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
+            Rectangle(hdc, 0, 0, 200, 200);
             FileImagePrint(hWnd, "image\\test.bmp");
+            
             EndPaint(hWnd, &ps);
         }
         break;

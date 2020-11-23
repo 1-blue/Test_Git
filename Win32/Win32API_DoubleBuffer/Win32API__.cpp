@@ -1,8 +1,9 @@
-﻿// Win32API_Graphic_Function.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// Win32API__.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include "framework.h"
-#include "Win32API_Graphic_Function.h"
+#include "Win32API__.h"
+#include <stdio.h>
 
 #define MAX_LOADSTRING 100
 
@@ -10,6 +11,8 @@
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+HWND hWnd;
+RECT rc{ 0, 0, 0, 0 };
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -29,7 +32,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_WIN32APIGRAPHICFUNCTION, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_WIN32API, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
@@ -38,17 +41,70 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WIN32APIGRAPHICFUNCTION));
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WIN32API));
 
     MSG msg;
+    bool running = true;
+    static RECT r{ 0, 0, 100 ,100 };
+    static RECT r2{ 100, 100, 200 ,200 };
+    static char str[10];
 
-    // 기본 메시지 루프입니다:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    while (true)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))       //메시지있으면실행
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            if (msg.message == WM_QUIT)
+                return 0;
+            else
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+        }
+        else        //메시지 없으면 실행    
+        {
+            GetClientRect(hWnd, &rc);
+            HDC hdc = GetDC(hWnd);
+            HDC mdc = CreateCompatibleDC(hdc);
+            HBITMAP mBitmap = CreateCompatibleBitmap(mdc, rc.right, rc.bottom);
+
+            SelectObject(mdc, mBitmap);
+            FillRect(mdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH)); //도화지 색 변경
+
+            r.left++;
+            r.right++;
+
+            if (r.left >= rc.right)
+            {
+                r.left = 0;
+                r.right = 100;
+            }
+
+            switch (msg.message)
+            {
+            case WM_KEYDOWN:
+                if (GetAsyncKeyState(VK_RIGHT))
+                {
+                    r2.left++;
+                    r2.right++;
+                }
+                if (GetAsyncKeyState(VK_LEFT))
+                {
+                    r2.left--;
+                    r2.right--;
+                }
+                Rectangle(mdc, r2.left, r2.top, r2.right, r2.bottom);
+                break;
+            }
+
+            Rectangle(mdc, r.left, r.top, r.right, r.bottom);
+            Rectangle(mdc, r2.left, r2.top, r2.right, r2.bottom);
+
+            BitBlt(hdc, 0, 0, rc.right, rc.bottom, mdc, 0, 0, SRCCOPY);
+
+            DeleteObject(mBitmap);
+            ReleaseDC(hWnd, mdc);
+            ReleaseDC(hWnd, hdc);
         }
     }
 
@@ -66,10 +122,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WIN32APIGRAPHICFUNCTION));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WIN32API));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WIN32APIGRAPHICFUNCTION);
+    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WIN32API);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -80,11 +136,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   RECT rect{ 0, 0, 199, 199 };
-   AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, true);
-
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-       CW_USEDEFAULT, 0, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, hInstance, nullptr);
+   hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -97,29 +150,33 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-/*
-* HDITMAP CreateCompatibleBitmap(HDC hdc, int width, int height)
-* 임의의 크기의 비트맵 생성
-* PatBlt(HDC, int x, int y int width, int height, UINT option)
-* DC에 색을 넣음
-* 
-* SetROP2(HDC, int fnDrawMode)
-* 현재 출력화면 + 펜 + 브러쉬 (배경에다가 추가)
-* fnDrawMode : 
-* 
-*/
-
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    HBITMAP hBitmap;
-    HDC hmdc;
+    static RECT r{ 100, 100, 200, 200 };
 
     switch (message)
     {
-    case WM_MOVE:
-        InvalidateRect(hWnd, NULL, true);
+    case WM_KEYDOWN:
+        //if (wParam == VK_RIGHT)
+        //{
+        //    HDC hdc = GetDC(hWnd);
+        //    HDC mdc = CreateCompatibleDC(hdc);
+        //    HBITMAP hBitmap = CreateCompatibleBitmap(mdc, rc.right, rc.bottom);
+        //    SelectObject(mdc, hBitmap);
+        //    FillRect(mdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH)); //도화지 색 변경
+
+        //    Rectangle(mdc, r.left, r.top, r.right, r.bottom);
+        //    r.left++;
+        //    r.right++;
+
+        //    BitBlt(hdc, 0, 0, rc.right, rc.bottom, mdc, 0, 0, SRCCOPY);
+
+        //    DeleteObject(hBitmap);
+        //    ReleaseDC(hWnd, mdc);
+        //    ReleaseDC(hWnd, hdc);
+        //}
         break;
+
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -141,15 +198,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            
-            hBitmap = CreateCompatibleBitmap(hdc, 200, 200);    //초기에 검은색임
-            hmdc = CreateCompatibleDC(hdc);
-            SelectObject(hmdc, hBitmap);
-            PatBlt(hmdc, 0, 0, 200, 200, WHITENESS);
-            Rectangle(hmdc, 50, 50, 200, 200);
-            BitBlt(hdc, 50, 50, 200, 200, hmdc, 0, 0, SRCCOPY);
-            DeleteObject(hBitmap);
-            DeleteDC(hmdc);
 
             EndPaint(hWnd, &ps);
         }
