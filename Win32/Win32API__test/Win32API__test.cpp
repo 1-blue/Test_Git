@@ -101,22 +101,128 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     HBITMAP hBitmap;
     static BITMAP bmp;
     static HDC mdc;
-    static int idx = -1;
+    static RECT r{ 0, 0, 0, 0 };
+    static int deathIdx = -1;
+
+    HBITMAP hBitmapMove;
+    static BITMAP bmpMove;
+    static HDC mdcMove;
+    static RECT rectMove{ 0, 0, 0, 0 };
+    static int rMoveIdx = -1;
+
+    HBITMAP hBitmapAttack;
+    static BITMAP bmpAttack;
+    static HDC mdcAttack;
+    static int rAttackIdx = -1;
+
+    HDC hdc = GetDC(hWnd);
 
     switch (message)
     {
     case WM_CREATE:
         mdc = CreateCompatibleDC(GetDC(hWnd));
+        r.left = 300;
+        r.top = 300;
         SetTimer(hWnd, 1, 150, NULL);
+
+        mdcMove = CreateCompatibleDC(GetDC(hWnd));
+        rectMove.left = 500;
+        rectMove.top = 300;
+
+        mdcAttack = CreateCompatibleDC(GetDC(hWnd));
+
         break;
 
     case WM_TIMER:
         switch (wParam)
         {
-        case 1:
-            InvalidateRect(hWnd, NULL, true);
+        case 1:     //죽음
+            InvalidateRect(hWnd, &r, true);
+            break;
+            
+        case 2:     //공격
+            switch (++rAttackIdx)
+            {
+            case 0:
+                hBitmapAttack = (HBITMAP)LoadImage(NULL, "image\\우측공격\\1.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 1:
+                hBitmapAttack = (HBITMAP)LoadImage(NULL, "image\\우측공격\\2.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 2:
+                hBitmapAttack = (HBITMAP)LoadImage(NULL, "image\\우측공격\\3.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 3:
+                hBitmapAttack = (HBITMAP)LoadImage(NULL, "image\\우측공격\\4.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 4:
+                hBitmapAttack = (HBITMAP)LoadImage(NULL, "image\\우측공격\\5.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 5:
+                hBitmapAttack = (HBITMAP)LoadImage(NULL, "image\\우측공격\\6.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                rAttackIdx = -1;
+                KillTimer(hWnd, 2);
+                break;
+            default:
+                hBitmapAttack = (HBITMAP)LoadImage(NULL, "image\\11.png", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+            }
+            GetObject(hBitmapAttack, sizeof(BITMAP), &bmpAttack);
+            SelectObject(mdcAttack, hBitmapAttack);
+            BitBlt(hdc, rectMove.left, rectMove.top, rectMove.right, rectMove.bottom, mdcAttack, 0, 0, SRCCOPY);
+            DeleteObject(hBitmapAttack);
             break;
         }
+        break;
+
+    case WM_KEYDOWN:
+        
+        switch (wParam)
+        {
+        case VK_RIGHT:      //우측걷기
+            switch (++rMoveIdx)
+            {
+            case 0:
+                hBitmapMove = (HBITMAP)LoadImage(NULL, "image\\우측걷기\\1.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 1:
+                hBitmapMove = (HBITMAP)LoadImage(NULL, "image\\우측걷기\\2.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 2:
+                hBitmapMove = (HBITMAP)LoadImage(NULL, "image\\우측걷기\\3.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 3:
+                hBitmapMove = (HBITMAP)LoadImage(NULL, "image\\우측걷기\\4.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 4:
+                hBitmapMove = (HBITMAP)LoadImage(NULL, "image\\우측걷기\\5.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 5:
+                hBitmapMove = (HBITMAP)LoadImage(NULL, "image\\우측걷기\\6.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 6:
+                hBitmapMove = (HBITMAP)LoadImage(NULL, "image\\우측걷기\\7.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                break;
+            case 7:
+                hBitmapMove = (HBITMAP)LoadImage(NULL, "image\\우측걷기\\8.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                rMoveIdx = -1;
+                break;
+            default:
+                hBitmapMove = (HBITMAP)LoadImage(NULL, "image\\11.png", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+            }
+            GetObject(hBitmapMove, sizeof(BITMAP), &bmpMove);
+            SelectObject(mdcMove, hBitmapMove);
+            rectMove.left += 4;
+            rectMove.right = rectMove.left + bmpMove.bmWidth;
+            rectMove.bottom = rectMove.top + bmpMove.bmHeight;
+            BitBlt(hdc, rectMove.left, rectMove.top, rectMove.right, rectMove.bottom, mdcMove, 0, 0, SRCCOPY);
+            DeleteObject(hBitmapMove);
+            break;
+
+        case VK_SPACE:      //공격
+            SetTimer(hWnd, 2, 80, NULL);
+            break;
+        }
+        DeleteDC(hdc);
         break;
 
     case WM_COMMAND:
@@ -140,39 +246,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            switch (++idx)
+            switch (++deathIdx)
             {
             case 0:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\1.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                hBitmap = (HBITMAP)LoadImage(NULL, "image\\사망모션\\1.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
                 break;
             case 1:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\22.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                hBitmap = (HBITMAP)LoadImage(NULL, "image\\사망모션\\2.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
                 break;
             case 2:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\3.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                hBitmap = (HBITMAP)LoadImage(NULL, "image\\사망모션\\3.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
                 break;
             case 3:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\4.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                hBitmap = (HBITMAP)LoadImage(NULL, "image\\사망모션\\4.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
                 break;
             case 4:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\5.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                hBitmap = (HBITMAP)LoadImage(NULL, "image\\사망모션\\5.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
                 break;
             case 5:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\6.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                hBitmap = (HBITMAP)LoadImage(NULL, "image\\사망모션\\6.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
                 break;
             case 6:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\7.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                break;
-            case 7:
-                hBitmap = (HBITMAP)LoadImage(NULL, "image\\8.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-                idx = -1;
+                hBitmap = (HBITMAP)LoadImage(NULL, "image\\사망모션\\7.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+                deathIdx = -1;
                 break;
             default:
                 hBitmap = (HBITMAP)LoadImage(NULL, "image\\11.png", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
             }
             GetObject(hBitmap, sizeof(BITMAP), &bmp);
             SelectObject(mdc, hBitmap);
-            BitBlt(hdc, 300, 300, bmp.bmWidth, bmp.bmHeight, mdc, 0, 0, SRCCOPY);
+            r.right = r.left + bmp.bmWidth;
+            r.bottom = r.top + bmp.bmHeight;
+            BitBlt(hdc, r.left, r.top, r.right, r.bottom, mdc, 0, 0, SRCCOPY);
             DeleteObject(hBitmap);
 
             EndPaint(hWnd, &ps);
@@ -181,6 +286,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         DeleteDC(mdc);
+        KillTimer(hWnd, 1);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
