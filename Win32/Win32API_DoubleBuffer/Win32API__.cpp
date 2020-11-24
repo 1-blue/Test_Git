@@ -44,10 +44,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WIN32API));
 
     MSG msg;
-    bool running = true;
     static RECT r{ 0, 0, 100 ,100 };
-    static RECT r2{ 100, 100, 200 ,200 };
-    static char str[10];
 
     while (true)
     {
@@ -73,38 +70,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
             r.left++;
             r.right++;
-
             if (r.left >= rc.right)
             {
                 r.left = 0;
                 r.right = 100;
             }
 
-            switch (msg.message)
-            {
-            case WM_KEYDOWN:
-                if (GetAsyncKeyState(VK_RIGHT))
-                {
-                    r2.left++;
-                    r2.right++;
-                }
-                if (GetAsyncKeyState(VK_LEFT))
-                {
-                    r2.left--;
-                    r2.right--;
-                }
-                Rectangle(mdc, r2.left, r2.top, r2.right, r2.bottom);
-                break;
-            }
-
             Rectangle(mdc, r.left, r.top, r.right, r.bottom);
-            Rectangle(mdc, r2.left, r2.top, r2.right, r2.bottom);
 
             BitBlt(hdc, 0, 0, rc.right, rc.bottom, mdc, 0, 0, SRCCOPY);
 
-            DeleteObject(mBitmap);
-            DeleteDC(mdc);
-            ReleaseDC(hWnd, hdc);
+            DeleteObject(mBitmap);      //hbitmap삭제
+            DeleteDC(mdc);              //mdc삭제
+            ReleaseDC(hWnd, hdc);       //hdc반환
         }
     }
 
@@ -156,27 +134,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
-    case WM_KEYDOWN:
-        //if (wParam == VK_RIGHT)
-        //{
-        //    HDC hdc = GetDC(hWnd);
-        //    HDC mdc = CreateCompatibleDC(hdc);
-        //    HBITMAP hBitmap = CreateCompatibleBitmap(mdc, rc.right, rc.bottom);
-        //    SelectObject(mdc, hBitmap);
-        //    FillRect(mdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH)); //도화지 색 변경
-
-        //    Rectangle(mdc, r.left, r.top, r.right, r.bottom);
-        //    r.left++;
-        //    r.right++;
-
-        //    BitBlt(hdc, 0, 0, rc.right, rc.bottom, mdc, 0, 0, SRCCOPY);
-
-        //    DeleteObject(hBitmap);
-        //    ReleaseDC(hWnd, mdc);
-        //    ReleaseDC(hWnd, hdc);
-        //}
-        break;
-
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
