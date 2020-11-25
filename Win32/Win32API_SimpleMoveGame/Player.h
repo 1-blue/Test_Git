@@ -1,27 +1,29 @@
 #pragma once
-#include <iostream>
-#include <Windows.h>
+#include "ShareData.h"
 
-using namespace std;
+namespace PlayerDiraction
+{
+	enum dir
+	{
+		LEFT,
+		TOP,
+		RIGTH,
+		BOTTOM
+	};
+}
 
-class Player
+class Player : public Object
 {
 private:
-	HWND hWnd{ NULL };
-	HDC hdc{ NULL };
-	HDC mdc{ NULL };
-	BITMAP bmp;
-	HBITMAP hbmp{ NULL };
-	RECT clientRect{ 0, 0, 0, 0 };
-	RECT playerRect{ 0, 0, 0, 0 };
-	ULONGLONG speed;
-	int idx = -1;
-	ULONGLONG startTime = 0;
+	ShareData* shareData = ShareData::GetInstance();
+	int dir = PlayerDiraction::dir::RIGTH;
 
 public:
-	Player(HWND hWnd, RECT r, ULONGLONG speed);
-	void Move();
-	void Jump();
+	Player(HWND hWnd, RECT characterRect, unsigned int speed);
+	virtual void Move();
+	virtual void Render();
 
+	int GetDiraction();		//플레이어방향.. 필요하면사용
+
+	virtual ~Player() {};
 };
-

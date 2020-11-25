@@ -5,6 +5,8 @@
 #include "Win32API_SimpleMoveGame.h"
 #include <cstdio>
 #include "Player.h"
+#include "Bullet.h"
+#include <list>
 
 #define MAX_LOADSTRING 100
 
@@ -14,6 +16,12 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 HWND hWnd;
 Player* player;
+bool run = true;
+list<Bullet*> bullets;
+
+//잠깐추가
+ShareData* shareData = ShareData::GetInstance();
+RECT clientRect{ 0,0,0,0 };
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -43,24 +51,58 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     MSG msg;
-    static char str[100]{ '\0' };
+    HBITMAP hbmp;
+    HDC mdc;
 
-
-    // 기본 메시지 루프입니다:
-    while (true)
+    while (run)
     {
         if (PeekMessage(&msg, hWnd, 0, 0, PM_REMOVE))
         {
-            if (msg.message == WM_QUIT)
-                break;
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
         else
         {
             player->Move();
+            player->Render();
+
+            //총알이동 및 그리기
+            for (auto b : bullets)
+            {
+                b->Move();
+                b->Render();
+            }
+            //총알삭제
+            for (auto b = bullets.begin(); b != bullets.end();)
+            {
+                if ((*b)->IsRemove())   //총알사거리초과시 삭제
+                {
+                    b++;
+                    continue;
+                }
+
+                (*b)->ReleaseBullet();  //총알RECT랑 총알구조체 메모리반환
+                b = bullets.erase(b);   //총알리스트에서 삭제
+            }
+
+            mdc = shareData->GetMemoryDC();
+            GetClientRect(hWnd, &clientRect);
+            BitBlt(GetDC(hWnd), 0, 0, clientRect.right, clientRect.bottom, mdc, 0, 0, SRCCOPY);
+
+            DeleteObject(shareData->GetHBitMap());
+            DeleteDC(mdc);
+
+            mdc = CreateCompatibleDC(GetDC(hWnd));
+            hbmp = CreateCompatibleBitmap(mdc, clientRect.right, clientRect.bottom);
+            SelectObject(mdc, hbmp);
+            FillRect(mdc, &clientRect, (HBRUSH)GetStockObject(WHITE_BRUSH)); //도화지 색 변경
+            shareData->SetHBitMap(hbmp);
+            shareData->SetMemoryDC(mdc);
         }
     }
+
+    ShareData::ReleaseInstance();
+    delete player;
 
     return (int) msg.wParam;
 }
@@ -106,14 +148,33 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    RECT r;
-    GetClientRect(hWnd, &r);
+    RECT r{ 100, 100, 200, 200 };
 
     switch (message)
     {
     case WM_CREATE:
-        player = new Player(hWnd, r, 50);
+        player = new Player(hWnd, r, 300);
         break;
+
+    case WM_KEYDOWN:        //음... 이위치가맞는지모르겠네
+        if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && !(player->IsPause()) )
+        {
+            bullets.emplace_back(new Bullet(hWnd, r, 600, 500));
+        }
+        if ((GetAsyncKeyState(VK_ESCAPE) & 0x8000) && !(player->IsPause()))
+        {
+            player->Pause();
+            for (auto b : bullets)
+                b->Pause();
+        }
+        if ((GetAsyncKeyState(VK_TAB) & 0x8000) && player->IsPause())
+        {
+            player->PauseRelease();
+            for (auto b : bullets)
+                b->PauseRelease();
+        }
+        break;
+
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -141,6 +202,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
+        run = false;
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

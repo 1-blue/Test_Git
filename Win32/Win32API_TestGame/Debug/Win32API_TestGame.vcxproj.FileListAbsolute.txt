@@ -1,0 +1,2 @@
+C:\Users\user\Desktop\새 폴더 (2)\Test_Git\Win32\Win32API_TestGame\Debug\Win32API_TestGame.exe
+C:\Users\user\Desktop\새 폴더 (2)\Test_Git\Win32\Win32API_TestGame\Debug\Win32API_TestGame.pdb
