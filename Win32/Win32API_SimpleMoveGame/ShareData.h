@@ -4,7 +4,8 @@
 class ShareData
 {
 private:
-	dRECT rect{ 0,0,0,0 };
+	dRECT playerRect{ 0,0,0,0 };
+	dRECT aiRect{ 0,0,0,0 };
 	HDC mdc{ NULL };
 	HBITMAP hbmp{ NULL };
 	static ShareData* shareData;
@@ -14,13 +15,36 @@ public:
 	static ShareData* GetInstance();
 	static void ReleaseInstance();
 
-	const dRECT& GetLocation() const;
-	void SetLocation(dRECT& dRect);
+	const dRECT& GetPlayerRect() const;
+	void SetPlayerRect(dRECT& playerRect);
 
-	HDC GetMemoryDC();
+	const dRECT& GetAIRect() const;
+	void SetAIRect(dRECT& aiRect);
+
+	HDC GetMemoryDC() const;
 	void SetMemoryDC(HDC mdc);
 
+	HBITMAP GetHBitMap() const;
 	void SetHBitMap(HBITMAP hbmp);
-	HBITMAP GetHBitMap();
+
 };
 
+namespace CHARACTER
+{
+	enum
+	{
+		PLAYER,
+		AI
+	};
+}
+
+namespace CHARACTERDIRECTION
+{
+	enum dir
+	{
+		LEFT = -1,
+		TOP,
+		RIGTH,
+		BOTTOM
+	};
+}

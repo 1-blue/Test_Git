@@ -36,14 +36,14 @@ protected:		// get | set timeScale|speedIncrease필요하면 만들기
 	RECT clientRect{ 0, 0, 0, 0 };
 	dRECT objectRect{ 0, 0, 0, 0 };
 
-	//속도계산관련
-	SpeedStructure speedValue;
+	//이동속도계산관련
+	SpeedStructure moveSpeedValue;
 
 public:
 	Object(HWND hWnd, RECT characterRect, unsigned int speed);
-	double SpeedCalculation();		//이속계산
+	virtual double MoveSpeedCalculation();		//이속계산
 	virtual void Move() = 0;		//이속을 이용해서 좌표수정
-	virtual void Render() = 0;		//화면 갱신
+	virtual void Render() = 0;		//화면 갱신	//이거 여기다가 만드는것도 생각 굳이 오버로딩안해도될것같음
 	void Pause();
 	bool IsPause();
 	void PauseRelease();

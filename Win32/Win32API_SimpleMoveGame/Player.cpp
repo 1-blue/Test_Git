@@ -7,34 +7,34 @@ Player::Player(HWND hWnd, RECT characterRect, unsigned int speed = 300)
 
 void Player::Move()
 {
-    double dPlayerSpeed = this->SpeedCalculation();
+    double dPlayerSpeed = this->MoveSpeedCalculation();
 
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
     {
         objectRect.left += dPlayerSpeed;
         objectRect.right += dPlayerSpeed;
-        dir = PlayerDiraction::dir::RIGTH;
+        dir = CHARACTERDIRECTION::dir::RIGTH;
     }
     if (GetAsyncKeyState(VK_LEFT) & 0x8000)
     {
         objectRect.left -= dPlayerSpeed;
         objectRect.right -= dPlayerSpeed;
-        dir = PlayerDiraction::dir::LEFT;
+        dir = CHARACTERDIRECTION::dir::LEFT;
     }
     if (GetAsyncKeyState(VK_UP) & 0x8000)
     {
         objectRect.top -= dPlayerSpeed;
         objectRect.bottom -= dPlayerSpeed;
-        dir = PlayerDiraction::dir::TOP;
+        dir = CHARACTERDIRECTION::dir::TOP;
     }
     if (GetAsyncKeyState(VK_DOWN) & 0x8000)
     {
         objectRect.top += dPlayerSpeed;
         objectRect.bottom += dPlayerSpeed;
-        dir = PlayerDiraction::dir::BOTTOM;
+        dir = CHARACTERDIRECTION::dir::BOTTOM;
     }
 
-    shareData->SetLocation(objectRect);
+    shareData->SetPlayerRect(objectRect);
 }
 
 void Player::Render()

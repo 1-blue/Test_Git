@@ -15,17 +15,27 @@ void ShareData::ReleaseInstance()
 	shareData = NULL;
 }
 
-const dRECT& ShareData::GetLocation() const
+const dRECT& ShareData::GetPlayerRect() const
 {
-	return rect;
+	return playerRect;
 }
 
-void ShareData::SetLocation(dRECT& dRect)
+void ShareData::SetPlayerRect(dRECT& playerRect)
 {
-	this->rect = dRect;
+	this->playerRect = playerRect;
 }
 
-HDC ShareData::GetMemoryDC()
+const dRECT& ShareData::GetAIRect() const
+{
+	return this->aiRect;
+}
+
+void ShareData::SetAIRect(dRECT& aiRect)
+{
+	this->aiRect = aiRect;
+}
+
+HDC ShareData::GetMemoryDC() const
 {
 	return this->mdc;
 }
@@ -35,12 +45,12 @@ void ShareData::SetMemoryDC(HDC mdc)
 	this->mdc = mdc;
 }
 
+HBITMAP ShareData::GetHBitMap() const
+{
+	return this->hbmp;
+}
+
 void ShareData::SetHBitMap(HBITMAP hbmp)
 {
 	this->hbmp = hbmp;
-}
-
-HBITMAP ShareData::GetHBitMap()
-{
-	return this->hbmp;
 }

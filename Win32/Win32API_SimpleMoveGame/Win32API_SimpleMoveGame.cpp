@@ -4,9 +4,10 @@
 #include "framework.h"
 #include "Win32API_SimpleMoveGame.h"
 #include <cstdio>
+#include <list>
 #include "Player.h"
 #include "Bullet.h"
-#include <list>
+#include "AI.h"
 
 #define MAX_LOADSTRING 100
 
@@ -14,20 +15,24 @@
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
-HWND hWnd;
-Player* player;
-bool run = true;
-list<Bullet*> bullets;
-
-//잠깐추가
-ShareData* shareData = ShareData::GetInstance();
-RECT clientRect{ 0,0,0,0 };
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+//사용할 변수들
+bool run = true;
+HWND hWnd;
+Player* player;
+AI* ai;
+list<Bullet*> playerBullets;
+list<Bullet*> aiBullets;
+ShareData* shareData = ShareData::GetInstance();
+RECT clientRect{ 0,0,0,0 };
+RECT playerRect{ 100, 100, 200, 200 };
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -36,8 +41,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-
-    // TODO: 여기에 코드를 입력합니다.
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -53,6 +56,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
     HBITMAP hbmp;
     HDC mdc;
+    static RECT aiBulletRect{ 0, 0, 50, 50 };
 
     while (run)
     {
@@ -65,35 +69,62 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             player->Move();
             player->Render();
+            ai->Move();
+            ai->Render();
 
-            //총알이동 및 그리기
-            for (auto b : bullets)
-            {
+            //ai총쏘기.. ai가 가진 변수값을 사용해서 총쏘는 시간간격 결정
+            if (ai->IsShot())
+                aiBullets.emplace_back(new Bullet(hWnd, aiBulletRect, CHARACTER::AI, 600, 500));
+            
+            //플레이어 총알이동
+            for (auto b : playerBullets)
                 b->Move();
-                b->Render();
-            }
-            //총알삭제
-            for (auto b = bullets.begin(); b != bullets.end();)
+
+            //ai총알 이동
+            for (auto b : aiBullets)
+                b->Move();
+
+            //충돌or사거리초과시 플레이어총알삭제
+            for (auto b = playerBullets.begin(); b != playerBullets.end();)
             {
-                if ((*b)->IsRemove())   //총알사거리초과시 삭제
+                if ((*b)->IsDistanceLimited() || (*b)->IsCrash())   //총알사거리초과시 삭제
                 {
-                    b++;
-                    continue;
+                    (*b)->ReleaseBullet();        //총알RECT랑 총알구조체 메모리반환
+                    b = playerBullets.erase(b);   //총알리스트에서 삭제
                 }
-
-                (*b)->ReleaseBullet();  //총알RECT랑 총알구조체 메모리반환
-                b = bullets.erase(b);   //총알리스트에서 삭제
+                else
+                    b++;
+            }
+            //충돌or사거리초과시 ai총알삭제
+            for (auto b = aiBullets.begin(); b != aiBullets.end();)
+            {
+                if ((*b)->IsDistanceLimited() || (*b)->IsCrash())   //총알사거리초과시 삭제
+                {
+                    (*b)->ReleaseBullet();  //총알RECT랑 총알구조체 메모리반환
+                    b = aiBullets.erase(b);   //총알리스트에서 삭제
+                }
+                else
+                    b++;
             }
 
+            //플레이어 총알 그리기
+            for (auto b : playerBullets)
+                b->Render();
+
+            //ai총알 그리기
+            for (auto b : aiBullets)
+                b->Render();
+
+            //더블버퍼링처리
             mdc = shareData->GetMemoryDC();
             GetClientRect(hWnd, &clientRect);
             BitBlt(GetDC(hWnd), 0, 0, clientRect.right, clientRect.bottom, mdc, 0, 0, SRCCOPY);
 
             DeleteObject(shareData->GetHBitMap());
             DeleteDC(mdc);
-
             mdc = CreateCompatibleDC(GetDC(hWnd));
             hbmp = CreateCompatibleBitmap(mdc, clientRect.right, clientRect.bottom);
+
             SelectObject(mdc, hbmp);
             FillRect(mdc, &clientRect, (HBRUSH)GetStockObject(WHITE_BRUSH)); //도화지 색 변경
             shareData->SetHBitMap(hbmp);
@@ -148,29 +179,29 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    RECT r{ 100, 100, 200, 200 };
-
     switch (message)
     {
     case WM_CREATE:
-        player = new Player(hWnd, r, 300);
+        player = new Player(hWnd, playerRect, 300);
+        ai = new AI(hWnd, playerRect, 100, 200);
+
         break;
 
     case WM_KEYDOWN:        //음... 이위치가맞는지모르겠네
         if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && !(player->IsPause()) )
         {
-            bullets.emplace_back(new Bullet(hWnd, r, 600, 500));
+            playerBullets.emplace_back(new Bullet(hWnd, playerRect, CHARACTER::PLAYER, 600, 300));
         }
         if ((GetAsyncKeyState(VK_ESCAPE) & 0x8000) && !(player->IsPause()))
         {
             player->Pause();
-            for (auto b : bullets)
+            for (auto b : playerBullets)
                 b->Pause();
         }
         if ((GetAsyncKeyState(VK_TAB) & 0x8000) && player->IsPause())
         {
             player->PauseRelease();
-            for (auto b : bullets)
+            for (auto b : playerBullets)
                 b->PauseRelease();
         }
         break;
