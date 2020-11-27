@@ -150,8 +150,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         shape.emplace_back(new MyRect(hWnd, 0, 50, RECT{ 100, 100 * 0, 200, 100 + 100 * 0 }, clientRect));
         shape[0]->Initialize();
         shape.emplace_back(new MyCircle(hWnd, 1, 33, RECT{ 100, 100 * 1, 200, 100 + 100 * 1 }, clientRect));
-        shape[1]->Initialize();
-            
+        shape[1]->Initialize(); 
         break;
 
     case WM_COMMAND:

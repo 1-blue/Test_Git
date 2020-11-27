@@ -4,6 +4,8 @@
 #include "framework.h"
 #include "Win32API_TestGame.h"
 #include <list>
+#include <cmath>
+#include <cstdio>
 
 using namespace std;
 
@@ -28,14 +30,22 @@ typedef struct {
 //총알구조체(총알크기, 사거리)
 typedef struct {
     fPtrRect pBulletRect;
+    float radius;       //반지름
     float fDist;         //총알시작위치
     float fLimitDist;    //총알사거리
+    float bulletAngle;   //총알방향
 }bullet, *pBullet;
+
+typedef struct {
+    float x;
+    float y;
+    float radius;       //반지름
+}Player;
 
 HWND hWnd;
 bool gRun = true;
 RECT gClientRect{ 0,0,800,600 };
-fRect gPlayerRect{ 100,100,200,200 };
+Player gPlayer{ 100.f, 100.f, 50.f};
 
 //시간계산
 LARGE_INTEGER gATime;   //총프레임시간
@@ -44,6 +54,11 @@ float gDTime;           //프레임간의차이
 
 //플레이어총알
 list<pBullet> gPlayerBullets;
+
+//총구
+POINT gunPos{ 0, 0 };
+float gunLength = 100.f;
+float playerAngle;
 
 void TestFunc();
 
@@ -124,33 +139,63 @@ void TestFunc()
     //플레이어 초당 이동속도 : 300
     float fPlayerSpeed = (300.f + 300.f * speedIncrease) * gDTime * timeScale;
 
+    //총구방향변환속도
+    float fTestSpeed = (300.f + 300.f * speedIncrease) * gDTime * timeScale * 0.04;
+
     //만약 0.01초마다 한번씩 TestFunc()가 호출된다치면
     //gDTime이 0.01이 나올거고
     //fSpeed에는 300 * 0.01이고
     //그거를 위치값에서다가 더해주니까 값이 계속누적됨
     //누적되다보면 1초지나면 300만큼움직이게되는 개념
 
-    //플레이어움직임
-    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    //총구위치 x => cos, y => sin
+    gunPos.x = gPlayer.x + cosf(playerAngle) * gunLength;
+    gunPos.y = gPlayer.y + sinf(playerAngle) * gunLength;
+
+    //static char str[100]{ '\0' };
+    //sprintf_s(str, "%f, %f, %f", playerAngle, cosf(playerAngle), sinf(playerAngle));
+    //TextOut(hdc, 100, 300, str, strlen(str));
+
+    if (GetAsyncKeyState('D'))
     {
-        gPlayerRect.l += fPlayerSpeed;
-        gPlayerRect.r += fPlayerSpeed;
+        playerAngle += fTestSpeed;// *3.141592f;
+    }
+    if (GetAsyncKeyState('A'))
+    {
+        playerAngle -= fTestSpeed;// *3.141592f;
     }
     if (GetAsyncKeyState(VK_LEFT) & 0x8000)
     {
-        gPlayerRect.l -= fPlayerSpeed;
-        gPlayerRect.r -= fPlayerSpeed;
+        gPlayer.x -= fPlayerSpeed * 3.141592f * cosf(playerAngle);
+        gPlayer.y -= fPlayerSpeed * 3.141592f * sinf(playerAngle);
     }
-    if (GetAsyncKeyState(VK_UP) & 0x8000)
+    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
     {
-        gPlayerRect.t -= fPlayerSpeed;
-        gPlayerRect.b -= fPlayerSpeed;
+        gPlayer.x += fPlayerSpeed * 3.141592f * cosf(playerAngle);
+        gPlayer.y += fPlayerSpeed * 3.141592f * sinf(playerAngle);
     }
-    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-    {
-        gPlayerRect.t += fPlayerSpeed;
-        gPlayerRect.b += fPlayerSpeed;
-    }
+
+    ////플레이어움직임
+    //if (getasynckeystate(vk_right) & 0x8000)
+    //{
+    //    gplayerrect.playerrect.l += fplayerspeed;
+    //    gplayerrect.playerrect.r += fplayerspeed;
+    //}
+    //if (getasynckeystate(vk_left) & 0x8000)
+    //{
+    //    gplayerrect.playerrect.l -= fplayerspeed;
+    //    gplayerrect.playerrect.r -= fplayerspeed;
+    //}
+    //if (getasynckeystate(vk_up) & 0x8000)
+    //{
+    //    gplayerrect.playerrect.t -= fplayerspeed;
+    //    gplayerrect.playerrect.b -= fplayerspeed;
+    //}
+    //if (getasynckeystate(vk_down) & 0x8000)
+    //{
+    //    gplayerrect.playerrect.t += fplayerspeed;
+    //    gplayerrect.playerrect.b += fplayerspeed;
+    //}
 
     //플레이어의 총알이동속도 : 600
     float fbulletSpeed = 600.f * gDTime * timeScale;   
@@ -158,24 +203,27 @@ void TestFunc()
     //총알발사
     if (GetAsyncKeyState(VK_SPACE) & 0x8000)
     {
-        float bulletSize = 50;  //총알 사이즈 결정
         pBullet bullets = new bullet();
         fPtrRect bullet = new fRect();
-        bullet->l = gPlayerRect.r;
-        bullet->r = gPlayerRect.r + bulletSize;
-        bullet->t = (gPlayerRect.t + gPlayerRect.b) / 2 - (bulletSize / 2);
-        bullet->b = bullet->t + bulletSize;
 
+        bullets->radius = 25;       //총알사이즈
+
+        bullet->l = gPlayer.x + bullets->radius;
+        bullet->r = bullet->l + bullets->radius * 2;
+        bullet->t = gPlayer.y - bullets->radius;
+        bullet->b = bullet->t + bullets->radius * 2;
+
+        bullets->bulletAngle = playerAngle;
         bullets->pBulletRect = bullet;      //크기지정한 총알 구조체에 넣고
-        bullets->fDist = gPlayerRect.r;                 //총알시작위치지정
-        bullets->fLimitDist = 500.f + gPlayerRect.r;    //총알끝위치지정.. 사거리 500
+        bullets->fDist = bullet->l;                 //총알시작위치지정
+        bullets->fLimitDist = 500.f + bullet->l;    //총알끝위치지정.. 사거리 500
         gPlayerBullets.emplace_back(bullets);
     }
     //플레이어 총알이동
     for (auto& bullet : gPlayerBullets)
     {
-        bullet->pBulletRect->l += fbulletSpeed;
-        bullet->pBulletRect->r += fbulletSpeed;
+        bullet->pBulletRect->l += fbulletSpeed * cosf(bullet->bulletAngle);
+        bullet->pBulletRect->r += fbulletSpeed * sinf(bullet->bulletAngle);
         bullet->fDist += fbulletSpeed;
     }
     //총알삭제
@@ -191,13 +239,17 @@ void TestFunc()
         delete (*bullet);                       //총알구조체삭제
         bullet = gPlayerBullets.erase(bullet);  //총알리스트에서 삭제
     }
-    //플레이어 총알그리기
+    //플레이어의 총알그리기
     for (auto& bMove : gPlayerBullets)
     {
-        Rectangle(hdc, bMove->pBulletRect->l, bMove->pBulletRect->t, bMove->pBulletRect->r, bMove->pBulletRect->b);
+        Ellipse(hdc, bMove->pBulletRect->l, bMove->pBulletRect->t, bMove->pBulletRect->r, bMove->pBulletRect->b);
     }
 
-    Rectangle(hdc, gPlayerRect.l, gPlayerRect.t, gPlayerRect.r, gPlayerRect.b);
+    Ellipse(hdc, gPlayer.x - gPlayer.radius, gPlayer.y - gPlayer.radius, gPlayer.x + gPlayer.radius, gPlayer.y + gPlayer.radius);
+
+    //총구그리기
+    MoveToEx(hdc, gPlayer.x, gPlayer.y, NULL);
+    LineTo(hdc, gunPos.x, gunPos.y);
 
     ReleaseDC(hWnd, hdc);
 }
@@ -250,6 +302,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_CREATE:
+
+        break;
+
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);

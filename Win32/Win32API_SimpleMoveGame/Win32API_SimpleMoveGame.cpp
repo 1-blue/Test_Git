@@ -33,7 +33,6 @@ ShareData* shareData = ShareData::GetInstance();
 RECT clientRect{ 0,0,0,0 };
 RECT playerRect{ 100, 100, 200, 200 };
 
-
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,

@@ -9,25 +9,25 @@ void Player::Move()
 {
     double dPlayerSpeed = this->MoveSpeedCalculation();
 
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	if (GetAsyncKeyState(VK_RIGHT))
     {
         objectRect.left += dPlayerSpeed;
         objectRect.right += dPlayerSpeed;
         dir = CHARACTERDIRECTION::dir::RIGTH;
     }
-    if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+    if (GetAsyncKeyState(VK_LEFT))
     {
         objectRect.left -= dPlayerSpeed;
         objectRect.right -= dPlayerSpeed;
         dir = CHARACTERDIRECTION::dir::LEFT;
     }
-    if (GetAsyncKeyState(VK_UP) & 0x8000)
+    if (GetAsyncKeyState(VK_UP))
     {
         objectRect.top -= dPlayerSpeed;
         objectRect.bottom -= dPlayerSpeed;
         dir = CHARACTERDIRECTION::dir::TOP;
     }
-    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    if (GetAsyncKeyState(VK_DOWN))
     {
         objectRect.top += dPlayerSpeed;
         objectRect.bottom += dPlayerSpeed;

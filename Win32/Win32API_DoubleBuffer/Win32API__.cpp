@@ -77,7 +77,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             }
 
             Rectangle(mdc, r.left, r.top, r.right, r.bottom);
-
             BitBlt(hdc, 0, 0, rc.right, rc.bottom, mdc, 0, 0, SRCCOPY);
 
             DeleteObject(mBitmap);      //hbitmap삭제
