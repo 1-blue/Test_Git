@@ -1,25 +1,25 @@
 #include "Object.h"
 
-Object::Object() : refCount(1)
+Object::Object()// : refCount(1)
 {
 }
 
-void Object::AddRef()
-{
-	refCount++;
-}
-
-int Object::Release()
-{
-	refCount--;
-	if (refCount == 0)
-	{
-		delete this;		//자기자신삭제
-		return 0;
-	}
-
-	return refCount;
-}
+//void Object::AddRef()
+//{
+//	refCount++;
+//}
+//
+//int Object::Release()
+//{
+//	refCount--;
+//	if (refCount == 0)
+//	{
+//		delete this;		//자기자신삭제
+//		return 0;
+//	}
+//
+//	return refCount;
+//}
 
 void Object::SetTag(const string& tag)
 {

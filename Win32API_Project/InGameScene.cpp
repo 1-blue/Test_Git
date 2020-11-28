@@ -17,5 +17,5 @@ bool InGameScene::Init()
 	//ingame이 해야할것 작성
 
 
-	return false;
+	return true;
 }

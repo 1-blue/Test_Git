@@ -1,5 +1,6 @@
 #pragma once
 #include "game.h"
+#include "Ref.h"		//레퍼런스카운트.. 참조횟수계산.. 참조수가 0이면 삭제
 
 //화면에 보이게 배치하는 관리자
 //움직임이 있는것과 없는것
@@ -9,12 +10,12 @@ protected:
 	Object();
 	virtual ~Object() = 0;
 
-protected:			//레퍼런스카운트.. 참조횟수계산.. 참조수가 0이면 삭제
-	int refCount;
-
-public:
-	void AddRef();	//객체참조시 참조카운트+1
-	int Release();	//참조 -1 참조0되면 삭제
+//protected:			//레퍼런스카운트.. 참조횟수계산.. 참조수가 0이면 삭제
+//	int refCount;
+//
+//public:
+//	void AddRef();	//객체참조시 참조카운트+1
+//	int Release();	//참조 -1 참조0되면 삭제
 
 protected:	//float형 x, y가지고 있고, 연산자 오버로딩해둠 (=, +, -, *, /)
 	POSITION position;		//위치

@@ -8,12 +8,12 @@ Layer::Layer() : tag(""), order(0), scene(NULL)
 
 Layer::~Layer()
 {
-	for (auto object : objectList)
-	{
-		while (0 == object->Release());	//refCount가 0이면 object삭제
-	}
+	//for (auto object : objectList)
+	//{
+	//	while (0 == object->Release());	//refCount가 0이면 object삭제
+	//}
 
-	objectList.clear();
+	//objectList.clear();
 }
 
 void Layer::SetTag(const string& tag)
@@ -79,4 +79,5 @@ void Layer::Render(HDC hdc, float deltaTime)
 	{
 		object->Render(hdc, deltaTime);
 	}
+
 }

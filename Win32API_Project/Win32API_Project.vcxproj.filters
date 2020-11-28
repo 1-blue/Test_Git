@@ -54,6 +54,9 @@
     <ClCompile Include="Object.cpp">
       <Filter>03. Object</Filter>
     </ClCompile>
+    <ClCompile Include="Ref.cpp">
+      <Filter>01. Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="type.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>03. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Ref.h">
+      <Filter>01. Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
