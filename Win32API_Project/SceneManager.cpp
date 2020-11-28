@@ -59,3 +59,28 @@ bool SceneManager::Init()
 
     return true;
 }
+
+void SceneManager::Input(float deltaTime)
+{
+    scene->Input(deltaTime);
+}
+
+void SceneManager::Update(float deltaTime)
+{
+    scene->Update(deltaTime);
+}
+
+void SceneManager::LateUpdate(float deltaTime)
+{
+    scene->LateUpdate(deltaTime);
+}
+
+void SceneManager::Collision(float deltaTime)
+{
+    scene->Collision(deltaTime);
+}
+
+void SceneManager::Render(HDC hdc, float deltaTime)
+{
+    scene->Render(hdc, deltaTime);
+}

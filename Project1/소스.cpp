@@ -2,19 +2,30 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <list>
 
 using namespace std;
 
+class A {
+
+};
+
 int main(void)
 {
-	ifstream fcin("login\\login.txt");
+	list<A*> t;
 
-	string str;
-	getline(fcin, str, ',');
-	cout << str << endl;
+	t.emplace_back(new A());
+	t.emplace_back(new A());
+	t.emplace_back(new A());
+	t.emplace_back(new A());
 
-	getline(fcin, str, ',');
-	cout << str << endl;
+	for (auto i : t)
+	{
+		delete i;
+	}
+
+	t.clear();
+
 
 	system("pause");
 	return 0;

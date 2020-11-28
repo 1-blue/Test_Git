@@ -23,6 +23,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 * SceneManager.. Scene들을 관리
 * Scene... Scene을 상속받는 여러 장면들을 만듦.. (인트로, 인게임, 아웃트로)
 * Layer들을 겹쳐서 하나의 Scene을 만듦
+* Layer는 Object를 관리
+* Core → SceneManager → Scene → InGameScene → Layer → Object
 * 
 */
 

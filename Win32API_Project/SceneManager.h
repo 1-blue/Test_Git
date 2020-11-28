@@ -22,6 +22,11 @@ public:
 	T* CreateScene(SCENE sc);	//현재Scene인지 다음Scene인지 결정
 	bool Init();				//맨처음장면생성
 
-
+public:
+	virtual void Input(float deltaTime);		//입력받기
+	virtual void Update(float deltaTime);		//데이터갱신
+	virtual void LateUpdate(float deltaTime);	//늦은데이터갱신
+	virtual void Collision(float deltaTime);	//갱신된데이터로 충돌처리
+	virtual void Render(HDC hdc, float deltaTime);		//그림그리기
 };
 

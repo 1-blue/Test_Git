@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <list>
 #include <vector>
+#include <string>
 
 using namespace std;
 

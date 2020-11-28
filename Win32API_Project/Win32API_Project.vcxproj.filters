@@ -13,14 +13,20 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Core">
+    <Filter Include="01. Core">
       <UniqueIdentifier>{5a1d29ea-ab18-4851-b40c-f546880ec9e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
+    <Filter Include="01. Core\Timer">
+      <UniqueIdentifier>{db9f86f1-db4d-499a-99fe-23fc66d5b9e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Scene">
       <UniqueIdentifier>{49e7d116-3522-4499-9b79-4e6680a24e19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Timer">
-      <UniqueIdentifier>{db9f86f1-db4d-499a-99fe-23fc66d5b9e6}</UniqueIdentifier>
+    <Filter Include="02. Scene\Layer">
+      <UniqueIdentifier>{3852cdf3-4c35-478a-addd-fbbf970a6502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Object">
+      <UniqueIdentifier>{305ba7a5-40b2-403b-a869-1dd12cda0c71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -28,19 +34,25 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Core.cpp">
-      <Filter>Core</Filter>
+      <Filter>01. Core</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>Scene</Filter>
+      <Filter>02. Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>02. Scene</Filter>
     </ClCompile>
     <ClCompile Include="InGameScene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>02. Scene</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>Core\Timer</Filter>
+      <Filter>01. Core\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Layer.cpp">
+      <Filter>02. Scene\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>03. Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -54,22 +66,28 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Core.h">
-      <Filter>Core</Filter>
+      <Filter>01. Core</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
-      <Filter>Scene</Filter>
+      <Filter>02. Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Scene</Filter>
+      <Filter>02. Scene</Filter>
     </ClInclude>
     <ClInclude Include="InGameScene.h">
-      <Filter>Scene</Filter>
+      <Filter>02. Scene</Filter>
     </ClInclude>
     <ClInclude Include="flag.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Core\Timer</Filter>
+      <Filter>01. Core\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer.h">
+      <Filter>02. Scene\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>03. Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

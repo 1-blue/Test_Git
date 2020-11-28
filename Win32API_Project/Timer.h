@@ -20,6 +20,8 @@ public:
 	void Update();
 	float GetDeltaTime() const;
 	float GetFPS() const;
+	float GetTimeScale() const;
+	void SetTimeScale(float timeSacle);
 
 };
 

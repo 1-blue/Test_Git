@@ -32,8 +32,6 @@ int Core::Run()
 {
     MSG msg;
 
-    float deltaTime = 0.f;
-
     while (run)
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -42,17 +40,47 @@ int Core::Run()
             DispatchMessage(&msg);
         }
 
-        TimerUpdate();
-        //deltaTime = Timer::GetInst()->GetDeltaTime();   //요값을 전달해서 이동시 사용하면됨
-        //실행할거넣으면됨
+        Logic();
     }
 
     return (int)msg.wParam;
 }
 
-void Core::TimerUpdate()
+void Core::Logic()
 {
-    Timer::GetInst()->Update();
+    Timer::GetInst()->Update();     //타이머업데이트
+    float deltaTime = Timer::GetInst()->GetDeltaTime();   //요값을 전달해서 이동시 사용하면됨
+    
+    Input(deltaTime);
+    Update(deltaTime);
+    LateUpdate(deltaTime);
+    Collision(deltaTime);
+    Render(deltaTime);
+}
+
+void Core::Input(float deltaTime)
+{
+    SceneManager::GetInst()->Input(deltaTime);
+}
+
+void Core::Update(float deltaTime)
+{
+    SceneManager::GetInst()->Update(deltaTime);
+}
+
+void Core::LateUpdate(float deltaTime)
+{
+    SceneManager::GetInst()->LateUpdate(deltaTime);
+}
+
+void Core::Collision(float deltaTime)
+{
+    SceneManager::GetInst()->Collision(deltaTime);
+}
+
+void Core::Render(float deltaTime)
+{
+    SceneManager::GetInst()->Render(hdc, deltaTime);
 }
 
 BOOL Core::Init(HINSTANCE hInstance)
@@ -63,6 +91,9 @@ BOOL Core::Init(HINSTANCE hInstance)
 
     MyRegisterClass();
     Create();
+
+    //화면DC생성
+    hdc = GetDC(hWnd);
 
     //장면관리자 초기화
     if (!SceneManager::GetInst()->Init())
