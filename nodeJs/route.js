@@ -1,10 +1,10 @@
-function route(handle, pathname, response){
+function route(handle, pathname, response, filename){
     console.log("pathname : " + pathname);
     
     if(typeof handle[pathname] === 'function'){
-        handle[pathname](response);
+        handle[pathname](response, filename);
     }else{
-        handle['noting'](response);
+        //handle['noting'](response, filename);
     }
 }
 

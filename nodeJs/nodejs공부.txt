@@ -6,3 +6,4 @@ fs.readFile(path, 방식, callback);
 callback형식 : function(err, data);
 일단 콜백함수 넣으면 안됨...
 =========================================
+createServer
