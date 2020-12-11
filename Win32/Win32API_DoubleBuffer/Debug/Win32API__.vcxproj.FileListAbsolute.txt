@@ -1,4 +1,0 @@
-C:\Users\user\Desktop\Win32API__\Debug\Win32API__.exe
-C:\Users\user\Desktop\Win32API__\Debug\Win32API__.pdb
-C:\Users\user\Desktop\새 폴더 (2)\Test_Git\Win32\Win32API_DoubleBuffer\Debug\Win32API__.exe
-C:\Users\user\Desktop\새 폴더 (2)\Test_Git\Win32\Win32API_DoubleBuffer\Debug\Win32API__.pdb

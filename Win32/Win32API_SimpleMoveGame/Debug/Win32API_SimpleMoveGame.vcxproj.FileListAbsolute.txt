@@ -1,2 +1,0 @@
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_SimpleMoveGame\Debug\Win32API_SimpleMoveGame.exe
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_SimpleMoveGame\Debug\Win32API_SimpleMoveGame.pdb

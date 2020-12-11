@@ -1,2 +1,0 @@
-C:\Users\DBlab\Desktop\Test_Git\test_project\Debug\test_project.exe
-C:\Users\DBlab\Desktop\Test_Git\test_project\Debug\test_project.pdb

@@ -1,4 +1,0 @@
-C:\Users\DBlab\Desktop\Win32API__test\Debug\Win32API__test.exe
-C:\Users\DBlab\Desktop\Win32API__test\Debug\Win32API__test.pdb
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API__test\Debug\Win32API__test.exe
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API__test\Debug\Win32API__test.pdb

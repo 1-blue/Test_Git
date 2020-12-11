@@ -1,2 +1,0 @@
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_CollisionCheck_Function\Debug\Win32API_CollisionCheck_Function.exe
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_CollisionCheck_Function\Debug\Win32API_CollisionCheck_Function.pdb

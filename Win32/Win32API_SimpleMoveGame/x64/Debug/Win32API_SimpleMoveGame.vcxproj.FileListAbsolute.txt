@@ -1,2 +1,0 @@
-C:\Users\user\Desktop\새 폴더 (2)\Test_Git\Win32\Win32API_SimpleMoveGame\x64\Debug\Win32API_SimpleMoveGame.exe
-C:\Users\user\Desktop\새 폴더 (2)\Test_Git\Win32\Win32API_SimpleMoveGame\x64\Debug\Win32API_SimpleMoveGame.pdb

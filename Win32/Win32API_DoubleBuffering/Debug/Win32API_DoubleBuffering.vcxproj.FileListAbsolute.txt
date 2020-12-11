@@ -1,2 +1,0 @@
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_DoubleBuffering\Debug\Win32API_DoubleBuffering.exe
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_DoubleBuffering\Debug\Win32API_DoubleBuffering.pdb

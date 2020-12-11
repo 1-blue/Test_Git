@@ -1,4 +1,0 @@
-C:\Users\user\Desktop\새 폴더\Win32API_Project\Debug\Win32API_Project.exe
-C:\Users\user\Desktop\새 폴더\Win32API_Project\Debug\Win32API_Project.pdb
-C:\Users\user\Desktop\Win32API_Project\Debug\Win32API_Project.exe
-C:\Users\user\Desktop\Win32API_Project\Debug\Win32API_Project.pdb

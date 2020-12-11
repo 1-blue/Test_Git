@@ -1,2 +1,0 @@
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_Dialog\x64\Debug\Win32API_Dialog.exe
-C:\Users\DBlab\Desktop\Test_Git\Win32\Win32API_Dialog\x64\Debug\Win32API_Dialog.pdb
